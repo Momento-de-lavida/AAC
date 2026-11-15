@@ -29,11 +29,12 @@ describe('마음톡톡 AAC 의사소통 보드 단계별 집중 UI 및 통합 �
     expect(screen.queryByLabelText('동사 동작 보드')).not.toBeInTheDocument();
   });
 
-  it('명사 "빵" 선택 후 동사 "먹어요" 선택 시 ① 카드 조합 제시 후 ② 실제로 빵을 먹는 하나의 동작 그림이 제시되어야 한다', () => {
+  it('명사 "빵" 선택 후 동사 "먹어요" 선택 시 각 단계별로 이전 보드가 숨겨지고 단독 페이지로 전환되어야 한다', () => {
     render(<App />);
 
-    // 1. 명사 '빵' 선택 -> 선택한 명사만 활성화되고 동사 보드 등장
+    // 1. 명사 '빵' 선택 -> 1단계 명사 보드는 사라지고 2단계 동사 보드 단독 페이지로 전환
     fireEvent.click(screen.getByLabelText('빵 카드'));
+    expect(screen.queryByLabelText('명사 어휘 보드')).not.toBeInTheDocument();
     expect(screen.getByLabelText('동사 동작 보드')).toBeInTheDocument();
 
     // 1페이지 고빈도 동사(타요, 꺼내요, 뜯어요, 가요, 열어요) 확인
@@ -43,18 +44,30 @@ describe('마음톡톡 AAC 의사소통 보드 단계별 집중 UI 및 통합 �
     expect(screen.getByLabelText('가요 카드')).toBeInTheDocument();
     expect(screen.getByLabelText('열어요 카드')).toBeInTheDocument();
 
-    // 2. 동사 '먹어요' 선택 -> 결합 학습 스테이지 및 아동 음성 녹음 컨트롤 바 등장 (1차: 두 카드 조합 제시 화면)
+    // 2. 동사 '먹어요' 선택 -> 2단계 동사 보드도 사라지고 3단계 결합 학습 스테이지 단독 페이지로 전환
     fireEvent.click(screen.getByLabelText('먹어요 카드'));
+    expect(screen.queryByLabelText('명사 어휘 보드')).not.toBeInTheDocument();
+    expect(screen.queryByLabelText('동사 동작 보드')).not.toBeInTheDocument();
     expect(screen.getByLabelText('명사 동사 결합 학습 스테이지')).toBeInTheDocument();
     expect(screen.getByLabelText('두 카드 조합 제시 화면')).toBeInTheDocument();
     expect(screen.getByLabelText('아동 음성 녹음 컨트롤 바')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /아동 음성 녹음하기/i })).toBeInTheDocument();
 
-    // 3. 2차: 하나로 합쳐진 실제 동작 그림('빵 먹어요 통합 동작 그림') 화면 제시 확인
+    // 3. 4단계: 하나로 합쳐진 실제 동작 그림('빵 먹어요 통합 동작 그림') 단독 페이지 전환 확인
     const mergedStageBtn = screen.getByRole('button', { name: /하나로 합쳐진 실제 동작 그림/i });
     fireEvent.click(mergedStageBtn);
     expect(screen.getByLabelText('하나로 결합된 실제 동작 화면')).toBeInTheDocument();
     expect(screen.getByLabelText('빵 먹어요 통합 동작 그림')).toBeInTheDocument();
+
+    // 4. [동사 다시 고르기] 클릭 시 2단계 동사 보드 단독 페이지로 역이동 확인
+    fireEvent.click(screen.getByRole('button', { name: /동사 다시 고르기/i }));
+    expect(screen.queryByLabelText('명사 동사 결합 학습 스테이지')).not.toBeInTheDocument();
+    expect(screen.getByLabelText('동사 동작 보드')).toBeInTheDocument();
+
+    // 5. [명사 다시 고르기] 클릭 시 1단계 명사 보드 단독 페이지로 복귀 확인
+    fireEvent.click(screen.getByRole('button', { name: /명사 다시 고르기/i }));
+    expect(screen.queryByLabelText('동사 동작 보드')).not.toBeInTheDocument();
+    expect(screen.getByLabelText('명사 어휘 보드')).toBeInTheDocument();
   });
 
   it('즐겨찾기 챕터로 전환하면 저장된 자주 쓰는 표현을 모아 보고 즉시 실행할 수 있어야 한다', () => {

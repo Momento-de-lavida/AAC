@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { Button, Card, Space, Tag, Typography } from 'antd';
-import { ReloadOutlined, SoundFilled, StarFilled } from '@ant-design/icons';
+import { ArrowLeftOutlined, ReloadOutlined, SoundFilled, StarFilled } from '@ant-design/icons';
 import { useVoiceRecorder } from '../hooks/useVoiceRecorder';
 import { AacCard } from '../types/aac';
 import { TOUCH_METRICS, WARM_PASTEL_COLORS } from '../utils/constants';
@@ -13,8 +13,8 @@ const { Title, Text } = Typography;
 
 /**
  * @description 문장 완성 후 제시 단계 구분 타입
- * - 'combo': 1차로 [명사 카드] + [동사 카드] 조합과 "빵 먹어요" 표현을 제시하는 단계
- * - 'merged': 2차로 실제로 빵을 먹는 '하나의 결합된 동작 그림'을 제시하며 아동 녹음 음성(또는 TTS)을 제시하는 단계
+ * - 'combo': 3단계 페이지로 [명사 카드] + [동사 카드] 조합과 "빵 먹어요" 표현을 제시하는 단계
+ * - 'merged': 4단계 페이지로 실제로 빵을 먹는 '하나의 결합된 동작 그림'을 제시하며 아동 녹음 음성(또는 TTS)을 제시하는 단계
  */
 export type CombinedStagePhase = 'combo' | 'merged';
 
@@ -28,7 +28,7 @@ export interface CombinedSentenceStageProps {
   readonly verbCard: AacCard;
   /** 완성된 문장 텍스트 (예: '빵 먹어요') */
   readonly sentenceText: string;
-  /** 현재 제시 단계 ('combo': 두 카드 조합 제시 -> 'merged': 하나의 통합 동작 그림 제시) */
+  /** 현재 제시 단계 ('combo': 3단계 두 카드 조합 페이지 -> 'merged': 4단계 하나의 통합 동작 그림 페이지) */
   readonly stagePhase: CombinedStagePhase;
   /** 이미 즐겨찾기에 저장된 문장인지 여부 */
   readonly isFavoriteSaved: boolean;
@@ -40,15 +40,17 @@ export interface CombinedSentenceStageProps {
   readonly onStopTts: () => void;
   /** 즐겨찾기 저장 콜백 */
   readonly onSaveFavorite: () => void;
-  /** 다른 문장 만들기(처음으로) 콜백 */
+  /** 2단계(동사 다시 고르기) 페이지로 돌아가는 콜백 */
+  readonly onBackToVerbStep?: () => void;
+  /** 1단계 다른 문장 만들기(처음으로) 콜백 */
   readonly onReset: () => void;
 }
 
 /**
- * @description [HR-01, HR-03, HR-05] 명사+동사 선택 완료 시:
- * 1) [빵 그림 + 먹는 그림] 카드 조합과 "빵 먹어요" 제시 후,
- * 2) 실제로 빵을 먹는 '하나의 움직이는 동작 그림(CombinedActionScene)'을 제시하며
- *    녹음된 아동 음성(없으면 기본 TTS)으로 "빵 먹어요"를 들려주는 스테이지
+ * @description [HR-01, HR-03, HR-05] 명사+동사 선택 완료 시 단독 페이지로 전환되는 3·4단계 학습 스테이지:
+ * 1) 3단계('combo'): [빵 그림 + 먹는 그림] 카드 조합과 "빵 먹어요" 단독 페이지 제시 후,
+ * 2) 4단계('merged'): 실제로 빵을 먹는 '하나의 움직이는 동작 그림(CombinedActionScene)' 단독 페이지로 전환하여
+ *    녹음된 아동 음성(없으면 기본 TTS)으로 "빵 먹어요"를 들려줍니다.
  * @param {CombinedSentenceStageProps} props 컴포넌트 프로퍼티
  * @returns {React.ReactElement} 결합 동작 학습 스테이지 엘리먼트
  */
@@ -62,6 +64,7 @@ export function CombinedSentenceStage({
   onReplaySequence,
   onStopTts,
   onSaveFavorite,
+  onBackToVerbStep,
   onReset,
 }: CombinedSentenceStageProps): React.ReactElement {
   const isMerged = stagePhase === 'merged';
@@ -171,7 +174,7 @@ export function CombinedSentenceStage({
         onDeleteRecording={() => deleteRecordedVoice(sentenceText)}
       />
 
-      {/* 하단 제어 버튼 */}
+      {/* 하단 제어 버튼 (이전 단계 복귀 및 전체 초기화 포함) */}
       <Space wrap size="middle" style={{ marginTop: 12 }}>
         <Button type="primary" size="large" icon={<SoundFilled />} onClick={() => { stopVoiceAll(); onReplaySequence(); }} style={{ minHeight: TOUCH_METRICS.MIN_TARGET_SIZE, borderRadius: 16, fontWeight: 700, fontSize: 17 }}>
           조합 ➔ 통합 동작 연속으로 다시 보기·듣기
@@ -179,7 +182,12 @@ export function CombinedSentenceStage({
         <Button size="large" icon={<StarFilled style={{ color: isFavoriteSaved ? '#F59E0B' : undefined }} />} disabled={isFavoriteSaved} onClick={onSaveFavorite} style={{ minHeight: TOUCH_METRICS.MIN_TARGET_SIZE, borderRadius: 16, fontWeight: 600 }}>
           {isFavoriteSaved ? '즐겨찾기 저장됨' : '즐겨찾기에 저장'}
         </Button>
-        <Button size="large" icon={<ReloadOutlined />} onClick={onReset} style={{ minHeight: TOUCH_METRICS.MIN_TARGET_SIZE, borderRadius: 16 }}>
+        {onBackToVerbStep && (
+          <Button size="large" icon={<ArrowLeftOutlined />} onClick={() => { stopVoiceAll(); onBackToVerbStep(); }} style={{ minHeight: TOUCH_METRICS.MIN_TARGET_SIZE, borderRadius: 16, fontWeight: 600 }}>
+            동사 다시 고르기
+          </Button>
+        )}
+        <Button size="large" icon={<ReloadOutlined />} onClick={() => { stopVoiceAll(); onReset(); }} style={{ minHeight: TOUCH_METRICS.MIN_TARGET_SIZE, borderRadius: 16 }}>
           다른 문장 만들기
         </Button>
       </Space>

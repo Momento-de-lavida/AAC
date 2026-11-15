@@ -21,6 +21,7 @@ export interface AacStoreState {
     readonly completedSentenceSpeech: string | null;
   };
   readonly removeSelectedCardAt: (index: number) => void;
+  readonly clearSelectedVerb: () => void;
   readonly clearSentence: () => void;
   readonly getSentenceText: () => string;
   readonly saveCurrentAsFavorite: () => boolean;
@@ -102,6 +103,12 @@ export const useAacStore = create<AacStoreState>((set, get) => {
     removeSelectedCardAt: (index: number): void => {
       set((state) => ({
         selectedCards: state.selectedCards.filter((_, idx) => idx !== index),
+      }));
+    },
+
+    clearSelectedVerb: (): void => {
+      set((state) => ({
+        selectedCards: state.selectedCards.filter((card) => card.partOfSpeech === 'noun'),
       }));
     },
 

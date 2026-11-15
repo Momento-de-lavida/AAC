@@ -20,6 +20,36 @@ Object.defineProperty(window, 'matchMedia', {
   })),
 });
 
+if (typeof window.localStorage === 'undefined' || typeof window.localStorage.getItem !== 'function') {
+  const memoryStore = new Map<string, string>();
+  const localStorageMock: Storage = {
+    get length(): number {
+      return memoryStore.size;
+    },
+    clear: (): void => {
+      memoryStore.clear();
+    },
+    getItem: (key: string): string | null => {
+      return memoryStore.has(key) ? (memoryStore.get(key) ?? null) : null;
+    },
+    key: (index: number): string | null => {
+      return Array.from(memoryStore.keys())[index] ?? null;
+    },
+    removeItem: (key: string): void => {
+      memoryStore.delete(key);
+    },
+    setItem: (key: string, value: string): void => {
+      memoryStore.set(key, String(value));
+    },
+  };
+
+  Object.defineProperty(window, 'localStorage', {
+    writable: true,
+    configurable: true,
+    value: localStorageMock,
+  });
+}
+
 if (typeof window.speechSynthesis === 'undefined') {
   Object.defineProperty(window, 'speechSynthesis', {
     writable: true,
