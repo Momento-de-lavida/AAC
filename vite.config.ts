@@ -8,6 +8,9 @@ import react from '@vitejs/plugin-react';
  */
 export default defineConfig({
   base: './',
+  server: {
+    allowedHosts: true,
+  },
   plugins: [react()],
   test: {
     globals: true,
