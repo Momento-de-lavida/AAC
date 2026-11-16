@@ -1,6 +1,6 @@
 import { AacCard, ChildProfile, FavoriteSentence, NounCategory } from '../types/aac';
 import { DEFAULT_VERB_CARDS, VERB_MOTION_OPTIONS } from './aacVerbTemplates';
-import { SWING_SVG_DATA_URL, TRAMPOLINE_SVG_DATA_URL } from './playEquipmentSvg';
+import { SNACK_BAG_SVG_DATA_URL, SWING_SVG_DATA_URL, TRAMPOLINE_SVG_DATA_URL } from './playEquipmentSvg';
 
 export { DEFAULT_VERB_CARDS, VERB_MOTION_OPTIONS };
 
@@ -44,7 +44,7 @@ export const NOUN_CATEGORIES: readonly NounCategory[] = [
 export const DEFAULT_NOUN_CARDS: readonly AacCard[] = [
   // 1. 간식·음식 (food) — 과자봉지, 빨대, 주스 포함
   { id: 'noun-bread', label: '빵', speechText: '빵', partOfSpeech: 'noun', categoryId: 'food', emoji: '🥐' },
-  { id: 'noun-snack-bag', label: '과자봉지', speechText: '과자봉지', partOfSpeech: 'noun', categoryId: 'food', emoji: '🛍️' },
+  { id: 'noun-snack-bag', label: '과자봉지', speechText: '과자봉지', partOfSpeech: 'noun', categoryId: 'food', emoji: '🍪', customImageUrl: SNACK_BAG_SVG_DATA_URL },
   { id: 'noun-straw', label: '빨대', speechText: '빨대', partOfSpeech: 'noun', categoryId: 'food', emoji: '🥤' },
   { id: 'noun-juice', label: '주스', speechText: '주스', partOfSpeech: 'noun', categoryId: 'food', emoji: '🧃' },
   { id: 'noun-milk', label: '우유', speechText: '우유', partOfSpeech: 'noun', categoryId: 'food', emoji: '🥛' },

@@ -65,3 +65,14 @@ export const SWING_SVG_DATA_URL = `data:image/svg+xml;utf8,${encodeURIComponent(
 /** 트램폴린(방방이) 카드 이미지 Data URL */
 export const TRAMPOLINE_SVG_DATA_URL = `data:image/svg+xml;utf8,${encodeURIComponent(TRAMPOLINE_SVG_RAW)}`;
 
+const SNACK_BAG_SVG_RAW = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <rect width="100" height="100" rx="22" fill="#FFF8EC"/>
+  <path d="M24 22 L32 16 L40 22 L50 16 L60 22 L68 16 L76 22 L74 84 L68 88 L60 84 L50 88 L40 84 L32 88 L26 84 Z" fill="#FF9F43" stroke="#D35400" stroke-width="3"/>
+  <rect x="31" y="36" width="38" height="26" rx="6" fill="#FFFFFF"/>
+  <circle cx="43" cy="49" r="7" fill="#D9822B"/>
+  <circle cx="57" cy="49" r="7" fill="#E6953E"/>
+</svg>`;
+
+/** 톱니 모양 과자봉지 전용 카드 이미지 Data URL */
+export const SNACK_BAG_SVG_DATA_URL = `data:image/svg+xml;utf8,${encodeURIComponent(SNACK_BAG_SVG_RAW)}`;
+
