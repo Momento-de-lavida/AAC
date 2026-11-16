@@ -8,7 +8,19 @@ export const STORAGE_KEYS = {
   CUSTOM_CARDS: 'aac_app_custom_cards_v1',
   FAVORITE_SENTENCES: 'aac_app_favorite_sentences_v1',
   RECORDED_VOICES: 'aac_app_recorded_voices_v1',
+  CHILD_PROFILES: 'aac_app_child_profiles_v1',
+  ACTIVE_PROFILE_ID: 'aac_app_active_profile_id_v1',
 } as const;
+
+/**
+ * @description [HR-05] 아동(이용자) 프로필 ID별로 독립된 로컬 스토리지 키를 생성하는 순수 함수
+ * @param {string} baseKey 기본 스토리지 키 (예: STORAGE_KEYS.FAVORITE_SENTENCES)
+ * @param {string} profileId 아동 프로필 고유 ID (예: 'child-daon')
+ * @returns {string} 아동별로 격리된 스토리지 키 문자열
+ */
+export function getProfileStorageKey(baseKey: string, profileId: string): string {
+  return `${baseKey}__${profileId || 'default'}`;
+}
 
 /**
  * @description [HR-03, HR-04] 브라우저 localStorage에서 안전하게 데이터를 읽어 파싱하는 함수

@@ -14,6 +14,8 @@ import { DEFAULT_FAVORITE_SENTENCES } from './utils/aacTemplates';
 describe('마음톡톡 AAC 의사소통 보드 단계별 집중 UI 및 통합 동작 그림 검증', () => {
   beforeEach(() => {
     useAacStore.setState({
+      activeProfileId: 'child-daon',
+      isProfileModalOpen: false,
       activeChapter: 'food',
       activeCategory: 'food',
       selectedCards: [],
@@ -22,11 +24,23 @@ describe('마음톡톡 AAC 의사소통 보드 단계별 집중 UI 및 통합 �
     });
   });
 
-  it('초기 1단계에서는 전경·배경 분리를 위해 명사 보드만 단독 제시되고 동사 보드는 숨겨져 있어야 한다', () => {
+  it('앱 최초 진입 또는 설정 내 이용자 변경 클릭 시 아동(이용자) 선택 모달이 열리고 이용자를 전환할 수 있어야 한다', () => {
+    useAacStore.setState({ isProfileModalOpen: true });
+    render(<App />);
+
+    expect(screen.getByText(/수업할 이용자\(아동\) 선택 및 관리/i)).toBeInTheDocument();
+    const hajunProfileBtn = screen.getByLabelText('하준이 이용자 선택');
+    fireEvent.click(hajunProfileBtn);
+
+    expect(useAacStore.getState().activeProfileId).toBe('child-hajun');
+    expect(screen.getAllByText(/하준이/).length).toBeGreaterThan(0);
+  });
+
+  it('초기 1단계에서는 아동 집중도 향상을 위해 상단 진행 바 없이 명사 보드만 단독 제시되고 동사 보드는 숨겨져 있어야 한다', () => {
     render(<App />);
 
     expect(screen.getByText('마음톡톡 AAC')).toBeInTheDocument();
-    expect(screen.getByLabelText('문장 조합 바')).toBeInTheDocument();
+    expect(screen.queryByLabelText('단계별 페이지 전환 네비게이션')).not.toBeInTheDocument();
     expect(screen.getByLabelText('명사 어휘 보드')).toBeInTheDocument();
     expect(screen.queryByLabelText('동사 동작 보드')).not.toBeInTheDocument();
   });
@@ -75,7 +89,7 @@ describe('마음톡톡 AAC 의사소통 보드 단계별 집중 UI 및 통합 �
   it('즐겨찾기 챕터로 전환하면 저장된 자주 쓰는 표현을 모아 보고 즉시 실행할 수 있어야 한다', () => {
     render(<App />);
 
-    const favChapterBtn = screen.getByRole('button', { name: /즐겨찾기 챕터/i });
+    const favChapterBtn = screen.getByRole('button', { name: /즐겨찾기/i });
     fireEvent.click(favChapterBtn);
 
     expect(screen.getByLabelText('즐겨찾기 표현 보드')).toBeInTheDocument();
@@ -102,17 +116,17 @@ describe('마음톡톡 AAC 의사소통 보드 단계별 집중 UI 및 통합 �
     expect(screen.getByLabelText('재밌어요 카드')).toBeInTheDocument();
   });
 
-  it('치료사용 "새 카드 만들기" 모달에서 사진첩 선택 및 실시간 카메라 촬영 버튼을 제공하고 "명사 개수·음성 설정" 모달이 열려야 한다', () => {
+  it('아동 화면에는 치료사 전용 버튼이 숨겨지고 "설정" 버튼을 눌렀을 때 이용자 변경 및 새 카드 만들기를 열 수 있어야 한다', () => {
     render(<App />);
+
+    fireEvent.click(screen.getByRole('button', { name: /치료사 설정/i }));
+    expect(screen.getByText(/치료사 전용 설정 및 관리/i)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /이용자 변경·관리/i })).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole('button', { name: /새 카드 만들기/i }));
     expect(screen.getByText(/아동 맞춤형 새 어휘·동작 카드 만들기/i)).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /사진첩에서 사진·GIF 고르기/i })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /실시간 카메라로 찍기/i })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /기기 카메라 앱 열기/i })).toBeInTheDocument();
-
-    fireEvent.click(screen.getByRole('button', { name: /명사 개수·음성 설정/i }));
-    expect(screen.getByText(/한 화면에 제시할 명사 카드 개수/i)).toBeInTheDocument();
   });
 
   it('아동 음성 녹음 중 치료사 시범 발화를 위한 일시정지 및 이어서 녹음 버튼이 정상 동작해야 한다', () => {

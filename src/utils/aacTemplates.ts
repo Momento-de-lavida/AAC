@@ -1,5 +1,21 @@
-import { AacCard, FavoriteSentence, NounCategory, VerbMotionType } from '../types/aac';
+import { AacCard, ChildProfile, FavoriteSentence, NounCategory, VerbMotionType } from '../types/aac';
 import { SWING_SVG_DATA_URL, TRAMPOLINE_SVG_DATA_URL } from './playEquipmentSvg';
+
+/**
+ * @description 새 아동(이용자) 등록 시 선택 가능한 친근한 아바타 이모지 목록
+ */
+export const PROFILE_AVATAR_EMOJIS: readonly string[] = [
+  '🐣', '🐻', '🐰', '🐶', '🐱', '🦊', '🐼', '🐨', '🦁', '🐸',
+] as const;
+
+/**
+ * @description 최초 실행 시 기본 제공되는 아동(이용자) 프로필 목록
+ */
+export const DEFAULT_CHILD_PROFILES: readonly ChildProfile[] = [
+  { id: 'child-daon', name: '다온이', avatarEmoji: '🐣' },
+  { id: 'child-hajun', name: '하준이', avatarEmoji: '🐻' },
+  { id: 'child-seoa', name: '서아', avatarEmoji: '🐰' },
+] as const;
 
 /**
  * @description 커스텀 카드 추가 모달에서 제공하는 빠른 선택용 친근한 이모지 목록

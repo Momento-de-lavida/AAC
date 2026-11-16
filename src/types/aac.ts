@@ -88,6 +88,18 @@ export interface AacCard {
 }
 
 /**
+ * @description 아동(이용자) 개인화 프로필 인터페이스
+ */
+export interface ChildProfile {
+  /** 아동 프로필 고유 식별자 (예: 'child-daon') */
+  readonly id: string;
+  /** 아동 이름 또는 호칭 (예: '다온이') */
+  readonly name: string;
+  /** 친근한 대표 아바타 이모지 (예: '🐣') */
+  readonly avatarEmoji: string;
+}
+
+/**
  * @description 자주 쓰는 표현을 저장하는 '즐겨찾기 문장' 인터페이스
  */
 export interface FavoriteSentence {

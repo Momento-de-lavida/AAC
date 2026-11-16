@@ -1,10 +1,8 @@
 import React from 'react';
-import { Button, Col, Row, Space, Tag, Typography } from 'antd';
+import { Button, Col, Row, Space } from 'antd';
 import { AacCard, NounCategory, NounCategoryId, NounDisplayLimit } from '../types/aac';
 import { TOUCH_METRICS, WARM_PASTEL_COLORS } from '../utils/constants';
 import { AacWordCard } from './AacWordCard';
-
-const { Title, Text } = Typography;
 
 /**
  * @description NounBoardSection 컴포넌트의 Props 인터페이스
@@ -32,8 +30,7 @@ export interface NounBoardSectionProps {
 
 /**
  * @description [HR-01, HR-03, HR-05] 1단계 '명사(무엇을?)' 선택 전용 보드 컴포넌트
- * - 자폐 아동이 조작하기 어려운 좌우 페이지 넘기기 대신, 선택한 카테고리의 전체 단어를 한 화면에 제시합니다.
- * - 한 줄에 3개씩(Col span=8) 규칙적으로 그림을 배치하고 아래로 스크롤하여 직관적으로 탐색할 수 있게 합니다.
+ * - 아동의 주의 집중을 방해하는 상단 설명 문구와 배지를 제거하고, 카테고리 탭과 3열 그림 카드만 집중 제시합니다.
  * @param {NounBoardSectionProps} props 컴포넌트 프로퍼티
  * @returns {React.ReactElement} 명사 보드 섹션 엘리먼트
  */
@@ -60,30 +57,6 @@ export function NounBoardSection({
         height: '100%',
       }}
     >
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          marginBottom: 12,
-          flexWrap: 'wrap',
-          gap: 8,
-        }}
-      >
-        <div>
-          <Title level={4} style={{ margin: 0, color: WARM_PASTEL_COLORS.NOUN_ACCENT }}>
-            1단계: 명사 먼저 고르기 (무엇을?)
-          </Title>
-          <Text style={{ fontSize: 14, color: WARM_PASTEL_COLORS.TEXT_SECONDARY }}>
-            아래로 스크롤하며 원하는 그림 1개를 누르면 동사 선택 화면이 열려요!
-          </Text>
-        </div>
-
-        <Tag color="orange" style={{ fontSize: 14, fontWeight: 700, padding: '4px 12px', borderRadius: 12 }}>
-          전체 {nounCards.length}개 낱말 (한 줄에 3개씩 보기)
-        </Tag>
-      </div>
-
       {/* 5대 명사 카테고리 알약 탭 */}
       <Space wrap size={[8, 8]} style={{ marginBottom: 16, width: '100%' }}>
         {categories.map((cat) => {
@@ -111,7 +84,7 @@ export function NounBoardSection({
         })}
       </Space>
 
-      {/* 좌우 페이지 넘김 없이 한 줄에 3개씩(span=8) 배치하여 아래로 스크롤하는 명사 카드 그리드 */}
+      {/* 한 줄에 3개씩(span=8) 배치하여 아래로 스크롤하는 명사 카드 그리드 */}
       <Row gutter={[16, 16]}>
         {nounCards.map((card) => {
           const isSelected = selectedCardIds.has(card.id);

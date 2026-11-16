@@ -81,4 +81,31 @@ describe('Phase 6: 단계별 선택, 명사 노출 개수 설정 및 즐겨찾�
     const visibleAfterDelete = getVisibleCards('food', useAacStore.getState().customCards);
     expect(visibleAfterDelete.nouns.some((c) => c.id === 'custom-strawberry')).toBe(false);
   });
+
+  it('이용자(아동)별로 즐겨찾기 표현과 커스텀 카드가 독립적으로 분리 관리되어야 한다', () => {
+    // 1. 첫 번째 아동(다온이) 선택 후 "우유 주세요" 즐겨찾기 추가
+    useAacStore.getState().selectProfile('child-daon');
+    const milkCard = DEFAULT_NOUN_CARDS.find((c) => c.id === 'noun-milk')!;
+    const giveCard = DEFAULT_VERB_CARDS.find((c) => c.id === 'verb-give')!;
+    useAacStore.getState().selectCard(milkCard);
+    useAacStore.getState().selectCard(giveCard);
+    useAacStore.getState().saveCurrentAsFavorite();
+
+    expect(
+      useAacStore.getState().favoriteSentences.some((f) => f.sentenceText === '우유 주세요')
+    ).toBe(true);
+
+    // 2. 두 번째 아동(하준이)으로 전환하면 다온이의 "우유 주세요" 즐겨찾기가 보이지 않아야 함
+    useAacStore.getState().selectProfile('child-hajun');
+    expect(useAacStore.getState().activeProfileId).toBe('child-hajun');
+    expect(
+      useAacStore.getState().favoriteSentences.some((f) => f.sentenceText === '우유 주세요')
+    ).toBe(false);
+
+    // 3. 다시 다온이로 전환하면 다온이의 "우유 주세요" 즐겨찾기가 그대로 유지되어야 함
+    useAacStore.getState().selectProfile('child-daon');
+    expect(
+      useAacStore.getState().favoriteSentences.some((f) => f.sentenceText === '우유 주세요')
+    ).toBe(true);
+  });
 });

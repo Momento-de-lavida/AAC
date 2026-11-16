@@ -3,7 +3,7 @@ import {
   abortAudioRecordingSession, ActiveRecordingSession, pauseAudioRecordingSession, playAudioDataUrl,
   processAudioFile, resumeAudioRecordingSession, startAudioRecordingSession, stopAudioElement, stopAudioRecordingSession,
 } from '../services/audioRecordService';
-import { loadFromStorage, saveToStorage, STORAGE_KEYS } from '../services/storageService';
+import { getProfileStorageKey, loadFromStorage, saveToStorage, STORAGE_KEYS } from '../services/storageService';
 import { VOICE_RECORD_CONFIG } from '../utils/constants';
 
 /**
@@ -26,12 +26,14 @@ export interface UseVoiceRecorderReturn {
 }
 
 /**
- * @description [HR-01, HR-03, HR-05] 문장별 아동 음성 녹음(일시정지·재개 포함)·저장 및 통합 동작 그림 재생을 제어하는 커스텀 훅
+ * @description [HR-01, HR-03, HR-05] 아동 프로필별·문장별 음성 녹음(일시정지·재개 포함)·저장 및 재생을 제어하는 커스텀 훅
+ * @param {string} profileId 현재 선택된 아동(이용자) 프로필 고유 ID
  * @returns {UseVoiceRecorderReturn} 아동 음성 녹음 상태 및 제어 함수 객체
  */
-export function useVoiceRecorder(): UseVoiceRecorderReturn {
+export function useVoiceRecorder(profileId = 'child-daon'): UseVoiceRecorderReturn {
+  const storageKey = getProfileStorageKey(STORAGE_KEYS.RECORDED_VOICES, profileId);
   const [recordedMap, setRecordedMap] = useState<Record<string, string>>(() => {
-    const loaded = loadFromStorage<Record<string, string>>(STORAGE_KEYS.RECORDED_VOICES, {});
+    const loaded = loadFromStorage<Record<string, string>>(storageKey, {});
     return loaded.ok ? loaded.data : {};
   });
   const [isRecording, setIsRecording] = useState<boolean>(false);
@@ -61,7 +63,13 @@ export function useVoiceRecorder(): UseVoiceRecorderReturn {
     setIsPlayingRecordedVoice(false);
   }, []);
 
-  useEffect(() => () => stopVoiceAll(), [stopVoiceAll]);
+  useEffect(() => {
+    stopVoiceAll();
+    const loaded = loadFromStorage<Record<string, string>>(storageKey, {});
+    const next = loaded.ok ? loaded.data : {};
+    recordedMapRef.current = next;
+    setRecordedMap(next);
+  }, [storageKey, stopVoiceAll]);
 
   const hasRecordedVoice = useCallback(
     (sentenceText: string): boolean => Boolean(sentenceText && recordedMap[sentenceText]),
@@ -87,7 +95,7 @@ export function useVoiceRecorder(): UseVoiceRecorderReturn {
     (sentenceText: string, dataUrl: string, onSaved?: () => void): void => {
       const next = { ...recordedMapRef.current, [sentenceText]: dataUrl };
       recordedMapRef.current = next;
-      saveToStorage(STORAGE_KEYS.RECORDED_VOICES, next);
+      saveToStorage(storageKey, next);
       setRecordedMap(next);
       onSaved?.();
       stopAudioElement(audioRef.current);
@@ -95,7 +103,7 @@ export function useVoiceRecorder(): UseVoiceRecorderReturn {
       const playRes = playAudioDataUrl(dataUrl, () => setIsPlayingRecordedVoice(false));
       if (playRes.ok) audioRef.current = playRes.data;
     },
-    []
+    [storageKey]
   );
 
   const stopRecordingAndSave = useCallback(
@@ -137,7 +145,6 @@ export function useVoiceRecorder(): UseVoiceRecorderReturn {
     [scheduleMaxTimer, stopVoiceAll]
   );
 
-  /** 치료사 모델링 시 일시정지 (일시정지 중에는 자동 완료 타이머도 멈춤) */
   const pauseRecording = useCallback((): void => {
     clearMaxTimer();
     const res = pauseAudioRecordingSession(sessionRef.current);
@@ -145,7 +152,6 @@ export function useVoiceRecorder(): UseVoiceRecorderReturn {
     else setRecordError(res.error.message);
   }, []);
 
-  /** 아동 모방발화 차례에 녹음 재개 */
   const resumeRecording = useCallback(
     (sentenceText: string, onSaved?: () => void): void => {
       const res = resumeAudioRecordingSession(sessionRef.current);
@@ -177,9 +183,9 @@ export function useVoiceRecorder(): UseVoiceRecorderReturn {
     const next = { ...recordedMapRef.current };
     delete next[sentenceText];
     recordedMapRef.current = next;
-    saveToStorage(STORAGE_KEYS.RECORDED_VOICES, next);
+    saveToStorage(storageKey, next);
     setRecordedMap(next);
-  }, []);
+  }, [storageKey]);
 
   return {
     isRecording, isRecordingPaused, isPlayingRecordedVoice, recordError, hasRecordedVoice,

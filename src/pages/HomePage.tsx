@@ -1,11 +1,10 @@
 import React, { useMemo, useState } from 'react';
 import { AddCustomCardModal } from '../components/AddCustomCardModal';
 import { AppHeaderBar } from '../components/AppHeaderBar';
+import { ChildProfileModal } from '../components/ChildProfileModal';
 import { CombinedSentenceStage } from '../components/CombinedSentenceStage';
 import { FavoriteChapterSection } from '../components/FavoriteChapterSection';
 import { NounBoardSection } from '../components/NounBoardSection';
-import { SentenceStripBar } from '../components/SentenceStripBar';
-import { StepProgressBar, TherapyStepNumber } from '../components/StepProgressBar';
 import { TtsSettingsModal } from '../components/TtsSettingsModal';
 import { VerbBoardSection } from '../components/VerbBoardSection';
 import { useStepTransition } from '../hooks/useStepTransition';
@@ -16,11 +15,8 @@ import { NOUN_CATEGORIES } from '../utils/aacTemplates';
 import { WARM_PASTEL_COLORS } from '../utils/constants';
 
 /**
- * @description [HR-01, HR-03, HR-05] 자폐 아동 맞춤형 단계별 단독 페이지 전환 컨테이너:
- * - 1단계 페이지: 명사 보드 단독 제시
- * - 2단계 페이지: 동사 보드 단독 제시 (명사 보드 숨김)
- * - 3단계 페이지: [명사 + 동사] 낱말 카드 조합 단독 제시
- * - 4단계 페이지: 하나로 결합된 실제 동작 그림 및 아동 음성 녹음 단독 제시
+ * @description [HR-01, HR-03, HR-05] 아동의 집중도를 높이기 위해 상단 불필요 바를 제거하고
+ * 각 단계별로 오직 선택할 그림 화면만 단독 제시하는 메인 컨테이너
  * @returns {React.ReactElement} 메인 홈 페이지 엘리먼트
  */
 export function HomePage(): React.ReactElement {
@@ -28,13 +24,19 @@ export function HomePage(): React.ReactElement {
   const [isTtsModalOpen, setIsTtsModalOpen] = useState<boolean>(false);
 
   const {
-    activeChapter, activeCategory, selectedCards, customCards, favoriteSentences, ttsSettings,
-    setActiveChapter, setActiveCategory, selectCard, removeSelectedCardAt, clearSelectedVerb,
+    profiles, activeProfileId, isProfileModalOpen, activeChapter, activeCategory,
+    selectedCards, customCards, favoriteSentences, ttsSettings,
+    setProfileModalOpen, selectProfile, addProfile, deleteProfile,
+    setActiveChapter, setActiveCategory, selectCard, clearSelectedVerb,
     clearSentence, getSentenceText, saveCurrentAsFavorite, removeFavoriteSentence,
     applyFavoriteSentence, addCustomCard, deleteCustomCard, updateTtsSettings,
   } = useAacStore();
 
-  const { isSpeaking, speakingText, koreanVoices, speak, speakWithSentence, stop } = useTTS(ttsSettings);
+  const activeProfile = useMemo(
+    () => profiles.find((p) => p.id === activeProfileId) ?? profiles[0],
+    [profiles, activeProfileId]
+  );
+  const { isSpeaking, koreanVoices, speak, speakWithSentence, stop } = useTTS(ttsSettings);
   const { nouns, verbs } = useMemo(() => getVisibleCards(activeCategory, customCards), [activeCategory, customCards]);
   const selectedCardIds = useMemo(() => new Set(selectedCards.map((c) => c.id)), [selectedCards]);
   const selectedNoun = useMemo(() => selectedCards.find((c) => c.partOfSpeech === 'noun'), [selectedCards]);
@@ -70,27 +72,18 @@ export function HomePage(): React.ReactElement {
     speakWithSentence(text, text, () => setStagePhase('merged'));
   };
 
-  /** 전체 비우기 및 1단계(명사 고르기 페이지)로 복귀 */
   const handleClearAll = (): void => { stopAllSpeechAndTimers(); setStagePhase('combo'); clearSentence(); };
-
-  /** 선택된 명사는 유지하고 2단계(동사 고르기 페이지)로 복귀 */
   const handleBackToVerbStep = (): void => { stopAllSpeechAndTimers(); setStagePhase('combo'); clearSelectedVerb(); };
-
-  /** 상단 스텝 네비게이션 바를 통한 단계별 페이지 직접 전환 */
-  const handleSelectStep = (step: TherapyStepNumber): void => {
-    if (step === 1) handleClearAll();
-    else if (step === 2 && selectedNoun) handleBackToVerbStep();
-    else if (step === 3 && hasCompletedSentence) { stopAllSpeechAndTimers(); setStagePhase('combo'); }
-    else if (step === 4 && hasCompletedSentence) { stopAllSpeechAndTimers(); setStagePhase('merged'); }
-  };
 
   return (
     <main style={{ minHeight: '100vh', backgroundColor: WARM_PASTEL_COLORS.BG_MAIN, padding: '14px 20px 24px' }}>
       <AppHeaderBar
+        activeProfile={activeProfile}
         hasSelectedNoun={hasSelectedNoun}
         currentStep={currentStep}
         isFavoritesOpen={activeChapter === 'favorites'}
         favoritesCount={favoriteSentences.length}
+        onOpenProfileModal={() => setProfileModalOpen(true)}
         onToggleFavorites={() => {
           stopAllSpeechAndTimers();
           if (activeChapter === 'favorites') setActiveChapter(activeCategory);
@@ -98,27 +91,6 @@ export function HomePage(): React.ReactElement {
         }}
         onOpenAddModal={() => setIsAddModalOpen(true)}
         onOpenSettingsModal={() => setIsTtsModalOpen(true)}
-      />
-
-      {activeChapter !== 'favorites' && (
-        <StepProgressBar
-          currentStep={currentStep}
-          selectedNoun={selectedNoun}
-          selectedVerb={selectedVerb}
-          onSelectStep={handleSelectStep}
-        />
-      )}
-
-      <SentenceStripBar
-        selectedCards={selectedCards}
-        sentenceText={sentenceText}
-        isFavoriteSaved={isFavoriteSaved}
-        isSpeaking={isSpeaking}
-        speakingText={speakingText}
-        onSpeakSentence={() => speak(sentenceText)}
-        onSaveFavorite={() => saveCurrentAsFavorite()}
-        onRemoveCardAt={(idx) => { stopAllSpeechAndTimers(); removeSelectedCardAt(idx); }}
-        onClearAll={handleClearAll}
       />
 
       {activeChapter === 'favorites' && !hasCompletedSentence ? (
@@ -130,6 +102,7 @@ export function HomePage(): React.ReactElement {
         />
       ) : selectedNoun && selectedVerb ? (
         <CombinedSentenceStage
+          activeProfileId={activeProfileId}
           nounCard={selectedNoun}
           verbCard={selectedVerb}
           sentenceText={sentenceText}
@@ -163,6 +136,7 @@ export function HomePage(): React.ReactElement {
         />
       ) : (
         <VerbBoardSection
+          selectedNoun={selectedNoun}
           verbCards={verbs}
           selectedCardIds={selectedCardIds}
           isSpeaking={isSpeaking}
@@ -172,8 +146,22 @@ export function HomePage(): React.ReactElement {
         />
       )}
 
+      <ChildProfileModal
+        open={isProfileModalOpen}
+        profiles={profiles}
+        activeProfileId={activeProfileId}
+        onSelectProfile={(id) => { stopAllSpeechAndTimers(); selectProfile(id); }}
+        onAddProfile={(name, emoji) => { stopAllSpeechAndTimers(); addProfile(name, emoji); }}
+        onDeleteProfile={deleteProfile}
+        onClose={() => setProfileModalOpen(false)}
+      />
       <AddCustomCardModal open={isAddModalOpen} categories={NOUN_CATEGORIES} defaultCategoryId={activeCategory} onClose={() => setIsAddModalOpen(false)} onAddCard={addCustomCard} />
-      <TtsSettingsModal open={isTtsModalOpen} settings={ttsSettings} koreanVoices={koreanVoices} onUpdateSettings={updateTtsSettings} onTestSpeak={speak} onClose={() => setIsTtsModalOpen(false)} />
+      <TtsSettingsModal
+        open={isTtsModalOpen} activeProfile={activeProfile} settings={ttsSettings} koreanVoices={koreanVoices}
+        onUpdateSettings={updateTtsSettings} onTestSpeak={speak}
+        onOpenProfileModal={() => setProfileModalOpen(true)} onOpenAddCardModal={() => setIsAddModalOpen(true)}
+        onClose={() => setIsTtsModalOpen(false)}
+      />
     </main>
   );
 }

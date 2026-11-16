@@ -22,6 +22,8 @@ export type CombinedStagePhase = 'combo' | 'merged';
  * @description CombinedSentenceStage 컴포넌트의 Props 인터페이스
  */
 export interface CombinedSentenceStageProps {
+  /** 현재 활성화된 아동(이용자) 프로필 ID */
+  readonly activeProfileId?: string;
   /** 선택된 명사 카드 (예: 빵) */
   readonly nounCard: AacCard;
   /** 선택된 동사 카드 (예: 먹어요) */
@@ -55,7 +57,7 @@ export interface CombinedSentenceStageProps {
  * @returns {React.ReactElement} 결합 동작 학습 스테이지 엘리먼트
  */
 export function CombinedSentenceStage({
-  nounCard, verbCard, sentenceText, stagePhase, isFavoriteSaved,
+  activeProfileId, nounCard, verbCard, sentenceText, stagePhase, isFavoriteSaved,
   onChangePhase, onReplaySequence, onStopTts, onSaveFavorite, onBackToVerbStep, onReset,
 }: CombinedSentenceStageProps): React.ReactElement {
   const isMerged = stagePhase === 'merged';
@@ -65,7 +67,7 @@ export function CombinedSentenceStage({
     isRecording, isRecordingPaused, isPlayingRecordedVoice, recordError, hasRecordedVoice,
     startRecording, pauseRecording, resumeRecording, stopRecordingAndSave, handleAudioFile,
     playRecordedVoice, deleteRecordedVoice, stopVoiceAll,
-  } = useVoiceRecorder();
+  } = useVoiceRecorder(activeProfileId);
 
   const hasChildVoice = hasRecordedVoice(sentenceText);
 

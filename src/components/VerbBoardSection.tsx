@@ -1,17 +1,17 @@
 import React from 'react';
-import { Button, Col, Row, Space, Tag, Typography } from 'antd';
+import { Button, Col, Row, Tag } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { AacCard } from '../types/aac';
 import { TOUCH_METRICS, WARM_PASTEL_COLORS } from '../utils/constants';
 import { AacWordCard } from './AacWordCard';
 
-const { Title, Text } = Typography;
-
 /**
  * @description VerbBoardSection 컴포넌트의 Props 인터페이스
  */
 export interface VerbBoardSectionProps {
-  /** 표시할 전체 고빈도 동사 카드 배열 (18종+) */
+  /** 앞서 1단계에서 선택된 명사 카드 */
+  readonly selectedNoun?: AacCard;
+  /** 표시할 전체 고빈도 동사 카드 배열 */
   readonly verbCards: readonly AacCard[];
   /** 현재 문장 조합 바에 선택된 카드 ID 집합 */
   readonly selectedCardIds: ReadonlySet<string>;
@@ -27,12 +27,12 @@ export interface VerbBoardSectionProps {
 
 /**
  * @description [HR-01, HR-03, HR-05] 2단계 '고빈도 동사(어떻게?)' 선택 보드 섹션 컴포넌트
- * - 자폐 아동에게 어려운 좌우 페이지 넘김 없이 전체 동사 목록을 한 화면에서 한 줄에 3개씩(Col span=8) 배치합니다.
- * - 아래로 스크롤하며 동작을 탐색하고, 동사를 탭하면 선택한 동사의 동작 애니메이션이 시각적으로 활성화됩니다.
+ * - 불필요한 상단 안내 문구와 배지를 제거하고, 선택한 명사 표시와 3열 동사 카드 그리드만 집중 제시합니다.
  * @param {VerbBoardSectionProps} props 컴포넌트 프로퍼티
  * @returns {React.ReactElement} 동사 보드 섹션 엘리먼트
  */
 export function VerbBoardSection({
+  selectedNoun,
   verbCards,
   selectedCardIds,
   isSpeaking = false,
@@ -64,32 +64,29 @@ export function VerbBoardSection({
           gap: 8,
         }}
       >
-        <div>
-          <Title level={4} style={{ margin: 0, color: WARM_PASTEL_COLORS.VERB_ACCENT }}>
-            2단계: 고빈도 동사 고르기 (어떻게 할까요?)
-          </Title>
-          <Text style={{ fontSize: 14, color: WARM_PASTEL_COLORS.TEXT_SECONDARY }}>
-            아래로 스크롤하며 주세요·먹어요·타요·꺼내요·뜯어요·가요·열어요 등 동작을 선택해 보세요!
-          </Text>
-        </div>
-
-        <Space wrap size="small">
-          <Tag color="green" style={{ fontSize: 13, fontWeight: 700, padding: '4px 10px', borderRadius: 10 }}>
-            전체 {verbCards.length}개 동작 (한 줄에 3개씩 보기)
+        {selectedNoun ? (
+          <Tag
+            color="orange"
+            style={{ fontSize: 18, fontWeight: 800, padding: '6px 16px', borderRadius: 16 }}
+          >
+            {selectedNoun.emoji} {selectedNoun.label} + 어떤 동작을 할까요?
           </Tag>
-          {onBackToNounStep && (
-            <Button
-              icon={<ArrowLeftOutlined />}
-              onClick={onBackToNounStep}
-              style={{ borderRadius: 14, fontWeight: 600 }}
-            >
-              명사 다시 고르기
-            </Button>
-          )}
-        </Space>
+        ) : (
+          <span />
+        )}
+
+        {onBackToNounStep && (
+          <Button
+            icon={<ArrowLeftOutlined />}
+            onClick={onBackToNounStep}
+            style={{ borderRadius: 14, fontWeight: 600 }}
+          >
+            명사 다시 고르기
+          </Button>
+        )}
       </div>
 
-      {/* 좌우 페이지 넘김 없이 한 줄에 3개씩(span=8) 배치하여 아래로 스크롤하는 동사 카드 그리드 */}
+      {/* 한 줄에 3개씩(span=8) 배치하여 아래로 스크롤하는 동사 카드 그리드 */}
       <Row gutter={[14, 14]}>
         {verbCards.map((card) => {
           const isSelected = selectedCardIds.has(card.id);
