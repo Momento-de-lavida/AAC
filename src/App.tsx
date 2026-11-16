@@ -1,7 +1,7 @@
 import React from 'react';
 import { ConfigProvider } from 'antd';
 import koKR from 'antd/locale/ko_KR';
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { HashRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { HomePage } from './pages/HomePage';
 import { TOUCH_METRICS, WARM_PASTEL_COLORS } from './utils/constants';
 
@@ -26,12 +26,12 @@ export function App(): React.ReactElement {
         },
       }}
     >
-      <BrowserRouter>
+      <HashRouter>
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
-      </BrowserRouter>
+      </HashRouter>
     </ConfigProvider>
   );
 }

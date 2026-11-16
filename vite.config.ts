@@ -7,6 +7,7 @@ import react from '@vitejs/plugin-react';
  * 갤럭시 탭 S4 등 태블릿 배포 및 빠른 컴포넌트 검증을 위해 jsdom 테스트 환경을 함께 구성합니다.
  */
 export default defineConfig({
+  base: './',
   plugins: [react()],
   test: {
     globals: true,
