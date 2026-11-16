@@ -69,8 +69,8 @@ export const PHOTO_CAPTURE_CONFIG = {
 
 /** 아동 음성 녹음 설정 상수 */
 export const VOICE_RECORD_CONFIG = {
-  /** 로컬 스토리지 용량 보호 및 아동 발화 길이에 맞춘 최대 녹음 시간 (ms) */
-  MAX_DURATION_MS: 6000,
+  /** 한 단어씩 모방발화를 유도하는 시간을 고려한 최대 녹음 시간 (ms) */
+  MAX_DURATION_MS: 15000,
   /** 오디오 압축 비트레이트 (bps, 32kbps로 약 3초당 12KB 내외 유지) */
   AUDIO_BITS_PER_SECOND: 32000,
 } as const;

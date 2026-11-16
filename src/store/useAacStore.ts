@@ -37,7 +37,7 @@ const DEFAULT_SETTINGS: TtsSettings = {
   pitch: DEFAULT_TTS_CONFIG.DEFAULT_PITCH,
   volume: DEFAULT_TTS_CONFIG.DEFAULT_VOLUME,
   autoReadCompletedSentence: true,
-  nounDisplayLimit: 4,
+  nounDisplayLimit: 99,
 };
 
 /**

@@ -55,24 +55,16 @@ export interface CombinedSentenceStageProps {
  * @returns {React.ReactElement} 결합 동작 학습 스테이지 엘리먼트
  */
 export function CombinedSentenceStage({
-  nounCard,
-  verbCard,
-  sentenceText,
-  stagePhase,
-  isFavoriteSaved,
-  onChangePhase,
-  onReplaySequence,
-  onStopTts,
-  onSaveFavorite,
-  onBackToVerbStep,
-  onReset,
+  nounCard, verbCard, sentenceText, stagePhase, isFavoriteSaved,
+  onChangePhase, onReplaySequence, onStopTts, onSaveFavorite, onBackToVerbStep, onReset,
 }: CombinedSentenceStageProps): React.ReactElement {
   const isMerged = stagePhase === 'merged';
   const prevPhaseRef = useRef<CombinedStagePhase>(stagePhase);
 
   const {
-    isRecording, isPlayingRecordedVoice, recordError, hasRecordedVoice,
-    startRecording, stopRecordingAndSave, handleAudioFile, playRecordedVoice, deleteRecordedVoice, stopVoiceAll,
+    isRecording, isRecordingPaused, isPlayingRecordedVoice, recordError, hasRecordedVoice,
+    startRecording, pauseRecording, resumeRecording, stopRecordingAndSave, handleAudioFile,
+    playRecordedVoice, deleteRecordedVoice, stopVoiceAll,
   } = useVoiceRecorder();
 
   const hasChildVoice = hasRecordedVoice(sentenceText);
@@ -160,14 +152,17 @@ export function CombinedSentenceStage({
         </div>
       </div>
 
-      {/* 아동 음성 녹음 및 통합 동작 그림 재생 컨트롤 바 */}
+      {/* 아동 음성 녹음(일시정지·재개 포함) 및 통합 동작 그림 재생 컨트롤 바 */}
       <VoiceRecordBar
         sentenceText={sentenceText}
         hasRecordedVoice={hasChildVoice}
         isRecording={isRecording}
+        isRecordingPaused={isRecordingPaused}
         isPlayingRecordedVoice={isPlayingRecordedVoice}
         recordError={recordError}
         onStartRecording={() => { onStopTts(); void startRecording(sentenceText, switchToMergedWithoutTts); }}
+        onPauseRecording={() => { onStopTts(); pauseRecording(); }}
+        onResumeRecording={() => { onStopTts(); resumeRecording(sentenceText, switchToMergedWithoutTts); }}
         onStopRecording={() => { onStopTts(); void stopRecordingAndSave(sentenceText, switchToMergedWithoutTts); }}
         onSelectAudioFile={(file) => { onStopTts(); void handleAudioFile(sentenceText, file, switchToMergedWithoutTts); }}
         onPlayRecordedWithScene={() => { switchToMergedWithoutTts(); playRecordedVoice(sentenceText); }}

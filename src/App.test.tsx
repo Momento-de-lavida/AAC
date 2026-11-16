@@ -1,6 +1,8 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import { beforeEach, describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { App } from './App';
+import { VoiceRecordBar } from './components/VoiceRecordBar';
+import { pauseAudioRecordingSession, resumeAudioRecordingSession } from './services/audioRecordService';
 import { useAacStore } from './store/useAacStore';
 import { ok, err } from './types/common';
 import { DEFAULT_FAVORITE_SENTENCES } from './utils/aacTemplates';
@@ -80,7 +82,7 @@ describe('마음톡톡 AAC 의사소통 보드 단계별 집중 UI 및 통합 �
     expect(screen.getByLabelText('즐겨찾기 표현 빵 주세요')).toBeInTheDocument();
   });
 
-  it('놀이·장난감 카테고리에 그네, 트램폴린, 자전거, 노래가 제시되고 동사 페이지에 틀어주세요, 만지지 마세요, 좋아요, 맛있어요, 재밌어요가 제시되어야 한다', () => {
+  it('놀이·장난감 카테고리에 모든 어휘(그네, 트램폴린, 자전거, 노래, 비눗방울 등)가 페이지 넘김 없이 한 화면에 제시되고 동사 화면에서도 전체 동사가 한 화면에 제시되어야 한다', () => {
     useAacStore.setState({ activeChapter: 'play', activeCategory: 'play', selectedCards: [] });
     render(<App />);
 
@@ -88,10 +90,10 @@ describe('마음톡톡 AAC 의사소통 보드 단계별 집중 UI 및 통합 �
     expect(screen.getByLabelText('트램폴린 카드')).toBeInTheDocument();
     expect(screen.getByLabelText('자전거 카드')).toBeInTheDocument();
     expect(screen.getByLabelText('노래 카드')).toBeInTheDocument();
+    expect(screen.getByLabelText('비눗방울 카드')).toBeInTheDocument();
+    expect(screen.getByLabelText('퍼즐 카드')).toBeInTheDocument();
 
     fireEvent.click(screen.getByLabelText('노래 카드'));
-    fireEvent.click(screen.getByRole('button', { name: /다음 동사/i }));
-    fireEvent.click(screen.getByRole('button', { name: /다음 동사/i }));
 
     expect(screen.getByLabelText('틀어주세요 카드')).toBeInTheDocument();
     expect(screen.getByLabelText('만지지 마세요 카드')).toBeInTheDocument();
@@ -111,6 +113,56 @@ describe('마음톡톡 AAC 의사소통 보드 단계별 집중 UI 및 통합 �
 
     fireEvent.click(screen.getByRole('button', { name: /명사 개수·음성 설정/i }));
     expect(screen.getByText(/한 화면에 제시할 명사 카드 개수/i)).toBeInTheDocument();
+  });
+
+  it('아동 음성 녹음 중 치료사 시범 발화를 위한 일시정지 및 이어서 녹음 버튼이 정상 동작해야 한다', () => {
+    const onPause = vi.fn();
+    const onResume = vi.fn();
+    const { rerender } = render(
+      <VoiceRecordBar
+        sentenceText="빵 먹어요"
+        hasRecordedVoice={false}
+        isRecording={true}
+        isRecordingPaused={false}
+        isPlayingRecordedVoice={false}
+        recordError={null}
+        onStartRecording={vi.fn()}
+        onPauseRecording={onPause}
+        onResumeRecording={onResume}
+        onStopRecording={vi.fn()}
+        onSelectAudioFile={vi.fn()}
+        onPlayRecordedWithScene={vi.fn()}
+        onDeleteRecording={vi.fn()}
+      />
+    );
+
+    const pauseBtn = screen.getByRole('button', { name: /일시정지/i });
+    fireEvent.click(pauseBtn);
+    expect(onPause).toHaveBeenCalledTimes(1);
+
+    rerender(
+      <VoiceRecordBar
+        sentenceText="빵 먹어요"
+        hasRecordedVoice={false}
+        isRecording={true}
+        isRecordingPaused={true}
+        isPlayingRecordedVoice={false}
+        recordError={null}
+        onStartRecording={vi.fn()}
+        onPauseRecording={onPause}
+        onResumeRecording={onResume}
+        onStopRecording={vi.fn()}
+        onSelectAudioFile={vi.fn()}
+        onPlayRecordedWithScene={vi.fn()}
+        onDeleteRecording={vi.fn()}
+      />
+    );
+
+    const resumeBtn = screen.getByRole('button', { name: /이어서 녹음/i });
+    fireEvent.click(resumeBtn);
+    expect(onResume).toHaveBeenCalledTimes(1);
+    expect(pauseAudioRecordingSession(null).ok).toBe(false);
+    expect(resumeAudioRecordingSession(null).ok).toBe(false);
   });
 
   it('[HR-04] Result<T, E> 헬퍼 함수 ok와 err가 정확한 판별 유니온을 반환해야 한다', () => {
