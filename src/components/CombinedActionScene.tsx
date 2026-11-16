@@ -126,10 +126,62 @@ export function CombinedActionScene({ nounCard, verbCard, size = 190 }: Combined
               <text x="86" y="42" fontSize="26">✋</text>
             </g>
           </g>
+        ) : motion === 'takingOut' ? (
+          <g>
+            <rect x="30" y="64" width="60" height="32" rx="4" fill="#F5A65B" stroke="#C87A28" strokeWidth="2" />
+            <g style={{ animation: 'takeOutUp 1.3s ease-in-out infinite' }}>
+              <path d="M60 18 L52 28 H57 V38 H63 V28 H68 Z" fill="#2E9E6B" />
+              {renderNoun(60, 52, 32)}
+            </g>
+            <rect x="30" y="74" width="60" height="22" rx="3" fill="#FFBE76" stroke="#C87A28" strokeWidth="2" />
+          </g>
+        ) : motion === 'puttingIn' ? (
+          <g>
+            <rect x="30" y="66" width="60" height="30" rx="4" fill="#74B9FF" stroke="#0984E3" strokeWidth="2" />
+            <g style={{ animation: 'putInDown 1.3s ease-in-out infinite' }}>
+              <path d="M60 36 L52 26 H57 V16 H63 V26 H68 Z" fill="#0984E3" />
+              {renderNoun(60, 54, 32)}
+            </g>
+            <rect x="30" y="76" width="60" height="20" rx="3" fill="#A3CBFF" stroke="#0984E3" strokeWidth="2" />
+          </g>
+        ) : motion === 'turningOn' ? (
+          <g>
+            <rect x="24" y="50" width="32" height="38" rx="7" fill="#8B5CF6" />
+            <circle cx="40" cy="70" r="9" fill="#DDD6FE" />
+            {renderNoun(78, 70, 32)}
+            <g style={{ animation: 'takeOutUp 1.1s ease-in-out infinite' }}>
+              <text x="56" y="42" fontSize="22">🎵</text>
+              <text x="82" y="46" fontSize="20">🎶</text>
+            </g>
+          </g>
+        ) : motion === 'watching' ? (
+          <g>
+            <circle cx="36" cy="62" r="18" fill="#FFE0BD" />
+            <circle cx="42" cy="58" r="3" fill="#3D352E" />
+            <path d="M50 58 L70 52 M50 64 L70 70" stroke="#FF9F43" strokeWidth="2.5" strokeDasharray="4 3" />
+            {renderNoun(84, 62, 34)}
+          </g>
+        ) : motion === 'helping' ? (
+          <g>
+            {renderNoun(60, 38, 28)}
+            <g style={{ animation: 'handReachDown 1.1s ease-in-out infinite' }}>
+              <rect x="24" y="62" width="34" height="16" rx="8" fill="#FFCC99" stroke="#D49B6A" strokeWidth="2" />
+            </g>
+            <g style={{ animation: 'handReachUp 1.1s ease-in-out infinite' }}>
+              <rect x="62" y="62" width="34" height="16" rx="8" fill="#FFE0BD" stroke="#D49B6A" strokeWidth="2" />
+            </g>
+          </g>
         ) : (
           <g>
-            <g style={{ animation: motion === 'puttingIn' ? 'putInDown 1.3s ease-in-out infinite' : 'childJumpJoy 0.95s ease-in-out infinite' }}>
-              {renderNoun(60, 60, 42)}
+            <circle cx="46" cy="64" r="20" fill="#FFE0BD" />
+            <circle cx="40" cy="58" r="2.5" fill="#3D352E" />
+            <circle cx="52" cy="58" r="2.5" fill="#3D352E" />
+            <path d="M40 68 Q46 74 52 68" stroke="#E05A47" strokeWidth="2.5" fill="none" />
+            <g style={{ animation: 'childJumpJoy 0.95s ease-in-out infinite' }}>
+              {renderNoun(80, 66, 32)}
+              <text x="76" y="38" fontSize="22">
+                {motion === 'liking' ? '👍❤️' : motion === 'delicious' ? '😋✨' : motion === 'greeting' ? '👋' : '😆🎉'}
+              </text>
             </g>
           </g>
         )}

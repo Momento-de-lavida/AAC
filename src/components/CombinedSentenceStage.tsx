@@ -137,7 +137,7 @@ export function CombinedSentenceStage({
             </div>
             <Title level={2} style={{ margin: 0, color: WARM_PASTEL_COLORS.PRIMARY_BRAND }}>+</Title>
             <div style={{ padding: '14px 24px', borderRadius: 22, backgroundColor: '#FFFFFF', border: `3px solid ${WARM_PASTEL_COLORS.VERB_ACCENT}` }}>
-              <AnimatedVerbGraphic emoji={verbCard.emoji} label={verbCard.label} motionType={verbCard.motionType} customImageUrl={verbCard.customImageUrl} size={76} isActive={true} />
+              <AnimatedVerbGraphic cardId={verbCard.id} emoji={verbCard.emoji} label={verbCard.label} motionType={verbCard.motionType} customImageUrl={verbCard.customImageUrl} size={76} isActive={true} />
               <div><Text strong style={{ fontSize: 22 }}>{verbCard.label}</Text></div>
             </div>
           </div>

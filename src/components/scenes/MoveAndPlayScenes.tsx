@@ -4,32 +4,31 @@ import { ActionSceneSubProps } from './DailyActionScenes';
 /**
  * @description [HR-01, HR-03, HR-05] 의자 앉기·일어나기, 매트 눕기, 텐트 들어가기, 계단 오르내리기,
  * 탈것 내리기, 그네 밀기, 공 굴리기·던지기, 손 잡기·놓기·치우기, 노래 부르기·듣기 등 신체·이동·놀이 동작을
- * 단순 이모지 겹침 없이 하나의 일체형 그림으로 렌더링하는 컴포넌트
+ * 중복 없이 직관적인 1:1 일체형 그림으로 렌더링하는 컴포넌트
  * @param {ActionSceneSubProps} props 선택된 명사 및 동사 카드
  * @returns {React.ReactElement | null} 해당 동작의 일체형 SVG 그룹 엘리먼트
  */
 export function MoveAndPlayScenes({ verbCard }: ActionSceneSubProps): React.ReactElement | null {
   const vId = verbCard.id;
 
-  // 1. 의자 앉아요 / 의자에서 일어나요 (verb-sit, verb-stand): 실제 의자에 아이가 앉거나 일어서는 장면
+  // 1. 의자 앉아요 / 의자에서 일어나요 (verb-sit, verb-stand): 실제 의자에 무릎 굽혀 앉거나 위로 일어서는 장면
   if (vId === 'verb-sit' || vId === 'verb-stand') {
     const isStanding = vId === 'verb-stand';
     return (
       <g>
-        {/* 갈색 나무 의자 */}
-        <path d="M34 44 V92 M34 70 H64 V92" stroke="#A0522D" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" fill="none" />
-        {/* 앉거나 일어서는 아이 */}
+        <path d="M32 42 V92 M32 70 H62 V92" stroke="#A0522D" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" fill="none" />
         <g style={{ animation: isStanding ? 'takeOutUp 1.25s ease-in-out infinite' : 'putInDown 1.25s ease-in-out infinite' }}>
-          <circle cx="56" cy="36" r="12" fill="#FFE0BD" />
-          <circle cx="59" cy="34" r="2" fill="#3D352E" />
-          <path d="M48 48 L64 48 L62 68 L50 68 Z" fill="#10B981" />
-          <path d={isStanding ? 'M54 68 L54 88 M60 68 L62 88' : 'M52 66 L70 66 L70 86'} stroke="#3D352E" strokeWidth="5" strokeLinecap="round" fill="none" />
+          <circle cx="54" cy="36" r="11" fill="#FFE0BD" />
+          <circle cx="57" cy="34" r="2" fill="#3D352E" />
+          <path d="M46 47 L62 47 L60 67 L48 67 Z" fill={isStanding ? '#54A0FF' : '#10B981'} />
+          <path d={isStanding ? 'M52 67 L52 88 M58 67 L60 88' : 'M50 65 L68 65 L68 85'} stroke="#3D352E" strokeWidth="5" strokeLinecap="round" fill="none" />
         </g>
+        <text x="84" y="42" fontSize="22">{isStanding ? '⬆️' : '⬇️'}</text>
       </g>
     );
   }
 
-  // 2. 매트에 누워요 (verb-lie-down): 폭신한 매트와 베개 위에 아이가 편안하게 가로로 누워 쉬는 장면
+  // 2. 매트에 누워요 (verb-lie-down): 매트와 베개 위에 아이가 편안히 가로로 누워 있는 장면
   if (vId === 'verb-lie-down') {
     return (
       <g>
@@ -45,48 +44,54 @@ export function MoveAndPlayScenes({ verbCard }: ActionSceneSubProps): React.Reac
     );
   }
 
-  // 3. 텐트에 들어가요 (verb-enter): 삼각형 텐트 입구 안으로 아이가 쏙 걸어 들어가는 장면
+  // 3. 텐트에 들어가요 (verb-enter): 삼각형 텐트의 열린 입구 안으로 아이가 들어가는 장면
   if (vId === 'verb-enter') {
     return (
       <g>
-        <polygon points="66,22 26,88 102,88" fill="#FF9F43" stroke="#D35400" strokeWidth="2.5" />
-        <polygon points="66,44 48,88 84,88" fill="#2C3E50" />
+        <polygon points="68,22 28,88 104,88" fill="#FF9F43" stroke="#D35400" strokeWidth="2.5" />
+        <polygon points="68,44 50,88 86,88" fill="#2C3E50" />
         <g style={{ animation: 'walkForward 1.3s ease-in-out infinite' }}>
-          <circle cx="48" cy="54" r="10" fill="#FFE0BD" />
-          <rect x="42" y="64" width="12" height="16" rx="4" fill="#10B981" />
-          <path d="M45 80 L42 90 M51 80 L54 90" stroke="#3D352E" strokeWidth="3.5" strokeLinecap="round" />
+          <circle cx="44" cy="54" r="10" fill="#FFE0BD" />
+          <rect x="38" y="64" width="12" height="16" rx="4" fill="#10B981" />
+          <path d="M41 80 L38 90 M47 80 L50 90" stroke="#3D352E" strokeWidth="3.5" strokeLinecap="round" />
         </g>
       </g>
     );
   }
 
-  // 4. 계단 올라가요 / 계단 내려가요 (verb-go-up, verb-go-down): 실제 계단을 오르내리는 장면
+  // 4. 계단 올라가요 / 계단 내려가요 (verb-go-up, verb-go-down): 계단 방향을 달리하여 오르내리는 장면
   if (vId === 'verb-go-up' || vId === 'verb-go-down') {
     const isUp = vId === 'verb-go-up';
     return (
       <g>
-        <path d="M20 92 H44 V72 H68 V52 H96 V92 Z" fill="#DFE6E9" stroke="#636E72" strokeWidth="2.5" />
+        <path
+          d={isUp ? 'M20 92 H44 V72 H68 V52 H96 V92 Z' : 'M20 52 H48 V72 H72 V92 H96 V96 H20 Z'}
+          fill="#DFE6E9"
+          stroke="#636E72"
+          strokeWidth="2.5"
+        />
         <g style={{ animation: isUp ? 'takeOutUp 1.25s ease-in-out infinite' : 'putInDown 1.25s ease-in-out infinite' }}>
           <circle cx="56" cy="36" r="10" fill="#FFE0BD" />
-          <rect x="50" y="46" width="12" height="16" rx="4" fill="#54A0FF" />
+          <rect x="50" y="46" width="12" height="16" rx="4" fill={isUp ? '#54A0FF' : '#FF9F43'} />
           <path d="M53 62 L49 72 M59 62 L63 70" stroke="#3D352E" strokeWidth="3.5" strokeLinecap="round" />
         </g>
-        <text x="30" y="40" fontSize="22">{isUp ? '⬆️' : '⬇️'}</text>
+        <text x={isUp ? 28 : 82} y="38" fontSize="22">{isUp ? '⬆️' : '⬇️'}</text>
       </g>
     );
   }
 
-  // 5. 자동차 내려요 / 엘리베이터 내려요 (verb-get-off): 문이 열린 탈것에서 밖으로 내려오는 장면
+  // 5. 자동차 내려요 / 엘리베이터 내려요 (verb-get-off): 열린 문에서 밖으로 걸어 나오는 장면
   if (vId === 'verb-get-off') {
     return (
       <g>
-        <rect x="20" y="30" width="44" height="58" rx="6" fill="#D0EBFF" stroke="#2E86DE" strokeWidth="2.5" />
-        <rect x="28" y="38" width="28" height="48" fill="#2C3E50" />
+        <rect x="20" y="28" width="44" height="60" rx="6" fill="#D0EBFF" stroke="#2E86DE" strokeWidth="2.5" />
+        <rect x="28" y="36" width="28" height="50" fill="#2C3E50" />
         <g style={{ animation: 'walkForward 1.25s ease-in-out infinite' }}>
           <circle cx="68" cy="48" r="11" fill="#FFE0BD" />
           <rect x="61" y="59" width="14" height="18" rx="4" fill="#FF6B6B" />
           <path d="M65 77 L61 90 M71 77 L76 90" stroke="#3D352E" strokeWidth="3.5" strokeLinecap="round" />
         </g>
+        <path d="M52 64 H88 M82 58 L88 64 L82 70" stroke="#10B981" strokeWidth="3" strokeLinecap="round" fill="none" />
       </g>
     );
   }
@@ -108,39 +113,64 @@ export function MoveAndPlayScenes({ verbCard }: ActionSceneSubProps): React.Reac
     );
   }
 
-  // 7. 공 굴려요 / 공 던져요 (verb-roll, verb-throw): 공이 바닥을 굴러가거나 손에서 날아가는 장면
+  // 7. 공 굴려요 / 공 던져요 (verb-roll, verb-throw): 바닥에 공을 굴리거나 공중으로 공을 던지는 장면 분리
   if (vId === 'verb-roll' || vId === 'verb-throw') {
     const isRoll = vId === 'verb-roll';
     return (
       <g>
-        <line x1="18" y1="88" x2="102" y2="88" stroke="#B2E2C8" strokeWidth="4" strokeLinecap="round" />
-        <circle cx="32" cy="52" r="11" fill="#FFE0BD" />
-        <rect x="25" y="63" width="14" height="22" rx="5" fill="#10B981" />
+        {isRoll && <line x1="18" y1="88" x2="102" y2="88" stroke="#2E9E6B" strokeWidth="4" strokeLinecap="round" />}
+        <circle cx="30" cy={isRoll ? 58 : 48} r="11" fill="#FFE0BD" />
+        <rect x="23" y={isRoll ? 69 : 59} width="14" height="20" rx="5" fill={isRoll ? '#10B981' : '#54A0FF'} />
+        {!isRoll && <path d="M36 62 L52 42" stroke="#FFE0BD" strokeWidth="5" strokeLinecap="round" />}
         <g style={{ animation: isRoll ? 'walkForward 1.1s linear infinite' : 'spoonToMouth 1.1s ease-in-out infinite' }}>
-          <circle cx="74" cy={isRoll ? 74 : 46} r="14" fill="#FF9F43" stroke="#D35400" strokeWidth="2.5" />
-          <path d={isRoll ? 'M62 74 H86 M74 62 V86' : 'M62 46 H86 M74 34 V58'} stroke="#FFF8EC" strokeWidth="2" />
+          <circle cx="76" cy={isRoll ? 74 : 38} r="13" fill={isRoll ? '#FF9F43' : '#FF6B6B'} stroke="#C92A2A" strokeWidth="2" />
+          <path d={isRoll ? 'M64 74 H88 M76 62 V86' : 'M64 38 H88 M76 26 V50'} stroke="#FFF8EC" strokeWidth="2" />
         </g>
       </g>
     );
   }
 
-  // 8. 손 잡아요 / 손 놓아요 / 손 치워요 (verb-hold-hand, verb-let-go, verb-move-away)
-  if (vId === 'verb-hold-hand' || vId === 'verb-let-go' || vId === 'verb-move-away') {
-    const isHold = vId === 'verb-hold-hand';
+  // 8. 손 잡아요 / 손 놓아요 / 손 치워요 (verb-hold-hand, verb-let-go, verb-move-away): 3가지 손 동작 완전 분리
+  if (vId === 'verb-hold-hand') {
     return (
       <g>
-        <g style={{ animation: isHold ? 'handReachDown 1.1s ease-in-out infinite' : 'tearLeft 1.1s ease-in-out infinite' }}>
-          <rect x="20" y="50" width="32" height="18" rx="9" fill="#FFCC99" stroke="#D49B6A" strokeWidth="2" />
+        <g style={{ animation: 'handReachDown 1.1s ease-in-out infinite' }}>
+          <rect x="22" y="52" width="34" height="18" rx="9" fill="#FFCC99" stroke="#D49B6A" strokeWidth="2" />
         </g>
-        <g style={{ animation: isHold ? 'handReachUp 1.1s ease-in-out infinite' : 'tearRight 1.1s ease-in-out infinite' }}>
-          <rect x="68" y="50" width="32" height="18" rx="9" fill="#FFE0BD" stroke="#D49B6A" strokeWidth="2" />
+        <g style={{ animation: 'handReachUp 1.1s ease-in-out infinite' }}>
+          <rect x="64" y="52" width="34" height="18" rx="9" fill="#FFE0BD" stroke="#D49B6A" strokeWidth="2" />
         </g>
-        {isHold && <circle cx="60" cy="59" r="10" fill="#FF8E6E" opacity="0.7" />}
+        <text x="60" y="42" fontSize="22" textAnchor="middle">❤️</text>
+      </g>
+    );
+  }
+  if (vId === 'verb-let-go') {
+    return (
+      <g>
+        <g style={{ animation: 'tearLeft 1.15s ease-in-out infinite' }}>
+          <rect x="18" y="52" width="30" height="18" rx="9" fill="#FFCC99" stroke="#D49B6A" strokeWidth="2" />
+        </g>
+        <g style={{ animation: 'tearRight 1.15s ease-in-out infinite' }}>
+          <rect x="72" y="52" width="30" height="18" rx="9" fill="#FFE0BD" stroke="#D49B6A" strokeWidth="2" />
+        </g>
+        <path d="M52 42 L40 42 M68 42 L80 42" stroke="#636E72" strokeWidth="3" strokeLinecap="round" />
+      </g>
+    );
+  }
+  if (vId === 'verb-move-away') {
+    return (
+      <g>
+        <rect x="20" y="76" width="80" height="10" rx="4" fill="#DFE6E9" />
+        <g style={{ animation: 'walkForward 1.15s ease-in-out infinite' }}>
+          <ellipse cx="42" cy="60" rx="16" ry="10" fill="#FFCC99" stroke="#D49B6A" strokeWidth="2" />
+          <rect x="64" y="48" width="22" height="24" rx="5" fill="#74B9FF" stroke="#0984E3" strokeWidth="2" />
+        </g>
+        <path d="M36 34 H82 M76 28 L82 34 L76 40" stroke="#E67E22" strokeWidth="3.5" strokeLinecap="round" fill="none" />
       </g>
     );
   }
 
-  // 9. 노래 불러요 / 노래 들어요 (verb-sing, verb-listen): 마이크를 잡고 노래하거나 헤드폰으로 듣는 장면
+  // 9. 노래 불러요 / 노래 들어요 (verb-sing, verb-listen): 마이크 노래하기 vs 헤드폰 듣기 완전 분리
   if (vId === 'verb-sing' || vId === 'verb-listen') {
     const isSing = vId === 'verb-sing';
     return (
@@ -155,7 +185,7 @@ export function MoveAndPlayScenes({ verbCard }: ActionSceneSubProps): React.Reac
         {isSing && <rect x="72" y="68" width="8" height="20" rx="3" fill="#576574" transform="rotate(-25 72 68)" />}
         {isSing && <circle cx="68" cy="64" r="7" fill="#B2BEC3" />}
         <g style={{ animation: 'takeOutUp 1.1s ease-in-out infinite' }}>
-          <text x="78" y="40" fontSize="20">🎵</text>
+          <text x="78" y="40" fontSize="20">{isSing ? '🎤' : '🎶'}</text>
         </g>
       </g>
     );

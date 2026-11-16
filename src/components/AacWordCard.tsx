@@ -131,6 +131,7 @@ export function AacWordCard({
       <div style={{ minHeight: 74, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         {isVerb ? (
           <AnimatedVerbGraphic
+            cardId={card.id}
             emoji={card.emoji}
             label={card.label}
             motionType={card.motionType}

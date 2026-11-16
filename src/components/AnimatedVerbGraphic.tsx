@@ -1,5 +1,7 @@
 import React from 'react';
-import { VerbMotionType } from '../types/aac';
+import { AacCard, VerbMotionType } from '../types/aac';
+import { DailyActionScenes } from './scenes/DailyActionScenes';
+import { MoveAndPlayScenes } from './scenes/MoveAndPlayScenes';
 import {
   BeggingScene,
   DrinkingScene,
@@ -34,6 +36,8 @@ import '../assets/verbMotions.css';
  * @description AnimatedVerbGraphic 컴포넌트의 Props 인터페이스
  */
 export interface AnimatedVerbGraphicProps {
+  /** 동사 고유 카드 ID (41종 동사 1:1 비중복 직관 일러스트 매칭용) */
+  readonly cardId?: string;
   /** 카드 대표 이모지 심볼 (폴백용) */
   readonly emoji: string;
   /** 카드 한글 라벨 (대체 텍스트용) */
@@ -49,12 +53,14 @@ export interface AnimatedVerbGraphicProps {
 }
 
 /**
- * @description [HR-01, HR-03, HR-05] 17종의 고빈도 동사(주세요, 먹어요, 타요, 꺼내요, 뜯어요, 가요, 열어요 등)를
- * 실제 행동 과정 일러스트로 렌더링하며, 선택된 동사(isActive === true)만 애니메이션을 동작시키는 컴포넌트
+ * @description [HR-01, HR-03, HR-05] 모든 동사(41종+)가 중복 없이 각자의 직관적인 행동 일러스트를 보여주며,
+ * 선택된 동사(isActive === true)만 애니메이션을 동작시키는 컴포넌트
  * @param {AnimatedVerbGraphicProps} props 컴포넌트 프로퍼티
  * @returns {React.ReactElement} 리얼 동사 동작 그래픽 엘리먼트
  */
 export function AnimatedVerbGraphic({
+  cardId,
+  emoji,
   label,
   motionType = 'begging',
   customImageUrl,
@@ -66,21 +72,37 @@ export function AnimatedVerbGraphic({
       <div
         aria-label={`${label} 동작 애니메이션`}
         style={{
-          width: size,
-          height: size,
-          display: 'inline-flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          opacity: isActive ? 1 : 0.85,
+          width: size, height: size, display: 'inline-flex',
+          alignItems: 'center', justifyContent: 'center', opacity: isActive ? 1 : 0.85,
         }}
       >
-        <img
-          src={customImageUrl}
-          alt={`${label} 움직이는 GIF`}
-          style={{ width: '100%', height: '100%', borderRadius: 16, objectFit: 'cover' }}
-        />
+        <img src={customImageUrl} alt={`${label} 움직이는 GIF`} style={{ width: '100%', height: '100%', borderRadius: 16, objectFit: 'cover' }} />
       </div>
     );
+  }
+
+  // 1. 동사 고유 ID(cardId) 기반 1:1 전용 직관 장면 우선 확인 (동사 간 이미지 중복 원천 차단)
+  if (cardId) {
+    const dummyVerbCard: AacCard = { id: cardId, label, speechText: label, partOfSpeech: 'verb', emoji, motionType };
+    const dedicated = DailyActionScenes({ verbCard: dummyVerbCard }) ?? MoveAndPlayScenes({ verbCard: dummyVerbCard });
+    if (dedicated) {
+      return (
+        <div
+          aria-label={`${label} 동작 애니메이션`}
+          data-active={isActive ? 'true' : 'false'}
+          className={isActive ? 'verb-graphic-active' : 'verb-graphic-paused'}
+          style={{
+            display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+            transition: 'transform 0.2s ease', transform: isActive ? 'scale(1.08)' : 'scale(1)',
+          }}
+        >
+          <svg width={size} height={size} viewBox="0 0 120 120" aria-label={`${label} 실제 동작`}>
+            <circle cx="60" cy="60" r="54" fill="#F4FBF7" />
+            {dedicated}
+          </svg>
+        </div>
+      );
+    }
   }
 
   /** motionType에 따른 17종의 리얼 동작 장면(Multi-part Action Scene) 매핑 */

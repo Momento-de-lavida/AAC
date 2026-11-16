@@ -113,16 +113,20 @@ export function WearingScene({ size }: { readonly size: number }): React.ReactEl
   );
 }
 
-/** 16. '씻어요' (washing): 두 손 위로 비누거품과 물방울이 보글보글 문질러지는 동작 */
+/** 16. '씻어요' (washing): 수도꼭지에서 흐르는 물줄기 아래 두 손을 비누거품으로 보글보글 문질러 씻는 동작 */
 export function WashingScene({ size }: { readonly size: number }): React.ReactElement {
   return (
     <svg width={size} height={size} viewBox="0 0 80 80" aria-label="씻어요 실제 동작">
       <circle cx="40" cy="40" r="36" fill="#EBF8FF" />
-      <ellipse cx="40" cy="48" rx="18" ry="11" fill="#FFCC99" stroke="#E5A970" strokeWidth="2" />
+      <path d="M18 16 H40 Q46 16 46 22 V26" stroke="#7F8C8D" strokeWidth="5" strokeLinecap="round" fill="none" />
+      <path d="M43 28 V44 M46 28 V46 M49 28 V44" stroke="#54A0FF" strokeWidth="2.2" strokeLinecap="round" strokeDasharray="4 2" />
       <g style={{ animation: 'washScrub 0.9s ease-in-out infinite' }}>
-        <circle cx="32" cy="42" r="7" fill="#FFFFFF" stroke="#74B9FF" strokeWidth="2" />
-        <circle cx="45" cy="39" r="8" fill="#FFFFFF" stroke="#74B9FF" strokeWidth="2" />
-        <circle cx="39" cy="50" r="6" fill="#FFFFFF" stroke="#74B9FF" strokeWidth="2" />
+        <ellipse cx="34" cy="54" rx="14" ry="8" fill="#FFCC99" stroke="#D49B6A" strokeWidth="1.5" />
+        <ellipse cx="48" cy="56" rx="14" ry="8" fill="#FFE0BD" stroke="#D49B6A" strokeWidth="1.5" />
+        <rect x="35" y="48" width="12" height="8" rx="4" fill="#FF8E6E" />
+        <circle cx="30" cy="46" r="5" fill="#FFFFFF" stroke="#74B9FF" strokeWidth="1.5" />
+        <circle cx="41" cy="43" r="6" fill="#FFFFFF" stroke="#74B9FF" strokeWidth="1.5" />
+        <circle cx="51" cy="46" r="5" fill="#FFFFFF" stroke="#74B9FF" strokeWidth="1.5" />
       </g>
     </svg>
   );
