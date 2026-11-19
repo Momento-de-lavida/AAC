@@ -10,12 +10,22 @@ export const APP_META = {
   TARGET_DEVICE: 'Galaxy Tab S4 (10.5", 16:10)',
 } as const;
 
-/** 태블릿 터치 접근성 치수 상수 (단위: px) */
+/** 태블릿 터치 접근성 및 자폐 아동 시지각 직관성 강화를 위한 치수 상수 (단위: px) */
 export const TOUCH_METRICS = {
   /** [HR-06] 최소 터치 타겟 크기 (48px 이상 보장) */
   MIN_TARGET_SIZE: 52,
-  /** AAC 어휘/동작 카드 최소 높이 */
-  CARD_MIN_HEIGHT: 136,
+  /** AAC 어휘/동작 카드 최소 높이 (큼직한 그림 수용을 위해 대폭 확대) */
+  CARD_MIN_HEIGHT: 210,
+  /** 카드 내 움직이는 동사·형용사 그래픽 및 커스텀 이미지 크기 */
+  CARD_GRAPHIC_SIZE: 124,
+  /** 카드 내 명사 대표 이모지 폰트 크기 */
+  CARD_EMOJI_FONT_SIZE: 92,
+  /** 카드 하단 어휘 라벨 폰트 크기 */
+  CARD_LABEL_FONT_SIZE: 24,
+  /** 3단계 조합 스테이지 내 개별 카드 그래픽 크기 */
+  STAGE_CARD_GRAPHIC_SIZE: 120,
+  /** 4단계 통합 동작 스테이지의 메인 애니메이션 장면 크기 */
+  STAGE_MERGED_SCENE_SIZE: 240,
   /** 상단 문장 조합 바(Sentence Strip) 높이 */
   SENTENCE_BAR_HEIGHT: 108,
   /** 카드 모서리 둥글기 (아이들이 친근감을 느끼는 부드러운 곡률) */

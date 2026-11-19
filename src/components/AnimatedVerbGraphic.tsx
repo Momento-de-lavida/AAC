@@ -14,10 +14,14 @@ import {
   DontTouchScene,
   FunScene,
   GreetingScene,
+  HappyScene,
   HelpingScene,
+  HungryScene,
   LikingScene,
   OpeningScene,
   RefusingScene,
+  SickScene,
+  SleepyScene,
   TurningOnScene,
 } from './VerbActionScenesB';
 import {
@@ -152,6 +156,14 @@ export function AnimatedVerbGraphic({
         return <DeliciousScene size={size} />;
       case 'fun':
         return <FunScene size={size} />;
+      case 'happy':
+        return <HappyScene size={size} />;
+      case 'hungry':
+        return <HungryScene size={size} />;
+      case 'sick':
+        return <SickScene size={size} />;
+      case 'sleepy':
+        return <SleepyScene size={size} />;
       default:
         return <BeggingScene size={size} />;
     }

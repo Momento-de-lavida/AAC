@@ -69,7 +69,7 @@ export function VerbBoardSection({
             color="orange"
             style={{ fontSize: 18, fontWeight: 800, padding: '6px 16px', borderRadius: 16 }}
           >
-            {selectedNoun.emoji} {selectedNoun.label} + 어떤 동작을 할까요?
+            {selectedNoun.emoji} {selectedNoun.label} + 어떤 동작·상태(감정)인가요?
           </Tag>
         ) : (
           <span />

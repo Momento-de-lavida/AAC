@@ -1,152 +1,188 @@
 import React from 'react';
+import { CuteCharacter } from './scenes/CharacterParts';
 
 /**
- * @description 상호작용·감정·자기옹호 동사 9종(열어요, 도와주세요, 싫어요, 안녕하세요,
- * 틀어주세요, 만지지 마세요, 좋아요, 맛있어요, 재밌어요)의 멀티-파트 SVG 애니메이션 모음
+ * @description [HR-01, HR-03, HR-05] 상호작용·자기옹호·감정/상태(형용사) 13종의
+ * 고디테일 캐릭터 벡터 SVG 관절 모션 컴포넌트 모음
  */
 
-/** 6. '열어 주세요' (opening): 상자의 양쪽 뚜껑이 활짝 열리며 안에서 별이 솟아오르는 동작 */
+/** 6. '열어요' (opening): 상자의 양쪽 뚜껑이 활짝 열리며 안에서 반짝이는 별이 솟아오르는 관절 모션 */
 export function OpeningScene({ size }: { readonly size: number }): React.ReactElement {
   return (
     <svg width={size} height={size} viewBox="0 0 80 80" aria-label="열어 주세요 실제 동작">
-      <circle cx="40" cy="40" r="36" fill="#F1F9F1" />
-      <g style={{ animation: 'starPopOut 1.4s ease-in-out infinite', transformOrigin: '40px 36px' }}>
-        <polygon points="40,16 44,25 54,26 46,32 48,42 40,37 32,42 34,32 26,26 36,25" fill="#FFC312" stroke="#F79F1F" strokeWidth="1.5" />
+      <rect x="3" y="3" width="74" height="74" rx="20" fill="#F1F9F1" stroke="#B2E2C8" strokeWidth="2.5" />
+      <g style={{ animation: 'starPopOut 1.35s ease-in-out infinite', transformOrigin: '40px 34px' }}>
+        <polygon points="40,14 44,24 55,25 47,32 49,42 40,36 31,42 33,32 25,25 36,24" fill="#FFC312" stroke="#3D352E" strokeWidth="1.8" />
       </g>
-      <rect x="22" y="42" width="36" height="22" rx="3" fill="#F5A65B" stroke="#C87A28" strokeWidth="2" />
-      <rect x="20" y="37" width="20" height="6" rx="2" fill="#FFBE76" stroke="#C87A28" strokeWidth="1.8" style={{ animation: 'boxLidOpenLeft 1.4s ease-in-out infinite', transformOrigin: '22px 42px' }} />
-      <rect x="40" y="37" width="20" height="6" rx="2" fill="#FFBE76" stroke="#C87A28" strokeWidth="1.8" style={{ animation: 'boxLidOpenRight 1.4s ease-in-out infinite', transformOrigin: '58px 42px' }} />
+      <rect x="20" y="44" width="40" height="24" rx="4" fill="#F5A65B" stroke="#3D352E" strokeWidth="2.2" />
+      <rect x="18" y="38" width="22" height="7" rx="2.5" fill="#FFBE76" stroke="#3D352E" strokeWidth="2" style={{ animation: 'boxLidOpenLeft 1.35s ease-in-out infinite', transformOrigin: '20px 44px' }} />
+      <rect x="40" y="38" width="22" height="7" rx="2.5" fill="#FFBE76" stroke="#3D352E" strokeWidth="2" style={{ animation: 'boxLidOpenRight 1.35s ease-in-out infinite', transformOrigin: '60px 44px' }} />
     </svg>
   );
 }
 
-/** 7. '도와주세요' (helping): 아래의 작은 손과 위의 큰 손이 서로 다가와 따뜻하게 맞잡는 동작 */
+/** 7. '도와주세요' (helping): 아이의 작은 손과 어른의 큰 손이 서로 다가와 맞잡는 관절 모션 */
 export function HelpingScene({ size }: { readonly size: number }): React.ReactElement {
   return (
     <svg width={size} height={size} viewBox="0 0 80 80" aria-label="도와주세요 실제 동작">
-      <circle cx="40" cy="40" r="36" fill="#FFF5F5" />
-      <path d="M40 30 C37 25, 29 26, 29 33 C29 39, 40 45, 40 45 C40 45, 51 39, 51 33 C51 26, 43 25, 40 30 Z" fill="#FF7675" opacity="0.85" />
-      <g style={{ animation: 'handReachUp 1.2s ease-in-out infinite' }}>
-        <path d="M16 62 L32 45 C35 42, 39 45, 36 49 L24 64 Z" fill="#FFE0BD" stroke="#E5A970" strokeWidth="1.8" />
+      <rect x="3" y="3" width="74" height="74" rx="20" fill="#FFF5F5" stroke="#FECACA" strokeWidth="2.5" />
+      <path d="M40 26 C36 20, 27 22, 27 30 C27 37, 40 44, 40 44 C40 44, 53 37, 53 30 C53 22, 44 20, 40 26 Z" fill="#FF6B6B" stroke="#3D352E" strokeWidth="1.8" />
+      <g style={{ animation: 'handReachUp 1.15s ease-in-out infinite' }}>
+        <path d="M14 64 L32 45 C36 42, 40 45, 37 50 L23 68 Z" fill="#FFE0BD" stroke="#3D352E" strokeWidth="2" />
       </g>
-      <g style={{ animation: 'handReachDown 1.2s ease-in-out infinite' }}>
-        <path d="M64 18 L46 37 C43 40, 39 37, 42 33 L56 16 Z" fill="#FFCC99" stroke="#D4955A" strokeWidth="1.8" />
+      <g style={{ animation: 'handReachDown 1.15s ease-in-out infinite' }}>
+        <path d="M66 16 L46 37 C42 40, 38 37, 41 32 L57 12 Z" fill="#FFCC99" stroke="#3D352E" strokeWidth="2" />
       </g>
     </svg>
   );
 }
 
-/** 8. '싫어요' (refusing): 아이가 고개를 좌우로 가로젓고 손바닥과 X 표시로 거절하는 동작 */
+/** 8. '싫어요' (refusing): 캐릭터가 고개와 손을 좌우로 가로저으며 거절(X)하는 관절 모션 */
 export function RefusingScene({ size }: { readonly size: number }): React.ReactElement {
   return (
     <svg width={size} height={size} viewBox="0 0 80 80" aria-label="싫어요 실제 동작">
-      <circle cx="40" cy="40" r="36" fill="#FFF0ED" />
-      <g style={{ animation: 'headAndHandShakeNo 0.85s ease-in-out infinite', transformOrigin: '40px 45px' }}>
-        <circle cx="36" cy="36" r="16" fill="#FFE0BD" />
-        <path d="M28 31 L33 34 M33 31 L28 34 M39 31 L44 34 M44 31 L39 34" stroke="#3D352E" strokeWidth="2" strokeLinecap="round" />
-        <path d="M31 44 Q36 40 41 44" stroke="#E05A47" strokeWidth="2.2" fill="none" strokeLinecap="round" />
-        <rect x="48" y="38" width="13" height="17" rx="5" fill="#FFCC99" stroke="#E5A970" strokeWidth="1.5" />
-        <circle cx="56" cy="24" r="10" fill="#EB5757" />
-        <path d="M52 20 L60 28 M60 20 L52 28" stroke="#FFFFFF" strokeWidth="2.5" strokeLinecap="round" />
+      <rect x="3" y="3" width="74" height="74" rx="20" fill="#FFF0ED" stroke="#FECACA" strokeWidth="2.5" />
+      <g style={{ animation: 'headAndHandShakeNo 0.85s ease-in-out infinite', transformOrigin: '40px 44px' }}>
+        <CuteCharacter cx={34} cy={38} r={16.5} shirtColor="#FF7675" mood="refuse" />
+        <rect x="50" y="42" width="13" height="18" rx="6" fill="#FFE0BD" stroke="#3D352E" strokeWidth="2" />
+        <circle cx="58" cy="24" r="10.5" fill="#EB5757" stroke="#3D352E" strokeWidth="1.8" />
+        <path d="M54 20 L62 28 M62 20 L54 28" stroke="#FFFFFF" strokeWidth="2.8" strokeLinecap="round" />
       </g>
     </svg>
   );
 }
 
-/** 9. '안녕하세요' (greeting): 밝게 웃는 아이가 팔과 손바닥을 좌우로 흔들며 인사하는 동작 */
+/** 9. '안녕하세요' (greeting): 밝게 웃는 캐릭터가 팔과 손바닥을 좌우로 흔들며 인사하는 관절 모션 */
 export function GreetingScene({ size }: { readonly size: number }): React.ReactElement {
   return (
     <svg width={size} height={size} viewBox="0 0 80 80" aria-label="안녕하세요 실제 동작">
-      <circle cx="40" cy="40" r="36" fill="#FFFBEB" />
-      <circle cx="33" cy="38" r="16" fill="#FFE0BD" />
-      <circle cx="28" cy="35" r="2" fill="#3D352E" />
-      <circle cx="38" cy="35" r="2" fill="#3D352E" />
-      <path d="M28 42 Q33 47 38 42" stroke="#E05A47" strokeWidth="2.2" fill="none" strokeLinecap="round" />
-      <path d="M21 64 C21 54, 45 54, 45 64 Z" fill="#48DBFB" />
-      <g style={{ animation: 'wavingArmHand 0.9s ease-in-out infinite', transformOrigin: '48px 54px' }}>
-        <path d="M46 54 L56 32" stroke="#FFE0BD" strokeWidth="6" strokeLinecap="round" />
-        <circle cx="57" cy="28" r="7" fill="#FFE0BD" stroke="#E5A970" strokeWidth="1.5" />
+      <rect x="3" y="3" width="74" height="74" rx="20" fill="#FFFBEB" stroke="#FDE68A" strokeWidth="2.5" />
+      <CuteCharacter cx={33} cy={38} r={16.5} shirtColor="#48DBFB" mood="smile" />
+      <g style={{ animation: 'wavingArmHand 0.85s ease-in-out infinite', transformOrigin: '48px 54px' }}>
+        <path d="M47 54 L58 30" stroke="#FFE0BD" strokeWidth="6.5" strokeLinecap="round" />
+        <circle cx="59" cy="27" r="7.5" fill="#FFE0BD" stroke="#3D352E" strokeWidth="2" />
       </g>
     </svg>
   );
 }
 
-/** 18. '틀어주세요' (turningOn): 스피커 버튼을 누르면 신나는 음표(🎵🎶)가 솟아오르는 동작 */
+/** 10. '틀어주세요' (turningOn): 스피커에서 신나는 음표가 솟아오르고 아이가 기뻐하는 관절 모션 */
 export function TurningOnScene({ size }: { readonly size: number }): React.ReactElement {
   return (
     <svg width={size} height={size} viewBox="0 0 80 80" aria-label="틀어주세요 실제 동작">
-      <circle cx="40" cy="40" r="36" fill="#F3E8FF" />
-      <rect x="18" y="34" width="22" height="26" rx="5" fill="#8B5CF6" stroke="#6D28D9" strokeWidth="2" />
-      <circle cx="29" cy="49" r="6" fill="#DDD6FE" />
-      <polygon points="30,26 42,40 30,40" fill="#FFFFFF" opacity="0.2" />
-      <g style={{ animation: 'takeOutUp 1.1s ease-in-out infinite' }}>
-        <text x="50" y="34" fontSize="20">🎵</text>
-        <text x="61" y="48" fontSize="18">🎶</text>
+      <rect x="3" y="3" width="74" height="74" rx="20" fill="#F3E8FF" stroke="#DDD6FE" strokeWidth="2.5" />
+      <rect x="14" y="32" width="24" height="30" rx="5" fill="#8B5CF6" stroke="#3D352E" strokeWidth="2" />
+      <circle cx="26" cy="49" r="6.5" fill="#DDD6FE" stroke="#3D352E" strokeWidth="1.5" />
+      <g style={{ animation: 'takeOutUp 1.05s ease-in-out infinite' }}>
+        <circle cx="52" cy="36" r="5" fill="#EC4899" />
+        <path d="M56 36 V20 L66 23 V28 L56 25" fill="#EC4899" stroke="#3D352E" strokeWidth="1.5" />
       </g>
     </svg>
   );
 }
 
-/** 19. '만지지 마세요' (dontTouch): 손바닥을 앞으로 뻗어 보호막과 정지 신호를 보내는 자기옹호 동작 */
+/** 11. '만지지 마세요' (dontTouch): 손바닥을 앞으로 뻗어 정지 신호를 보내는 관절 모션 */
 export function DontTouchScene({ size }: { readonly size: number }): React.ReactElement {
   return (
     <svg width={size} height={size} viewBox="0 0 80 80" aria-label="만지지 마세요 실제 동작">
-      <circle cx="40" cy="40" r="36" fill="#FEE2E2" />
-      <g style={{ animation: 'headAndHandShakeNo 0.9s ease-in-out infinite', transformOrigin: '40px 44px' }}>
-        <rect x="27" y="28" width="26" height="30" rx="10" fill="#FFCC99" stroke="#D97706" strokeWidth="2" />
-        <circle cx="40" cy="40" r="24" fill="none" stroke="#EF4444" strokeWidth="4" />
-        <line x1="23" y1="23" x2="57" y2="57" stroke="#EF4444" strokeWidth="4" strokeLinecap="round" />
+      <rect x="3" y="3" width="74" height="74" rx="20" fill="#FEE2E2" stroke="#FCA5A5" strokeWidth="2.5" />
+      <g style={{ animation: 'headAndHandShakeNo 0.85s ease-in-out infinite', transformOrigin: '40px 44px' }}>
+        <CuteCharacter cx={33} cy={38} r={16} shirtColor="#EF4444" mood="refuse" />
+        <rect x="48" y="34" width="16" height="22" rx="7" fill="#FFE0BD" stroke="#3D352E" strokeWidth="2.2" />
+        <circle cx="56" cy="45" r="13" fill="none" stroke="#EF4444" strokeWidth="3.2" />
+        <line x1="47" y1="36" x2="65" y2="54" stroke="#EF4444" strokeWidth="3.2" strokeLinecap="round" />
       </g>
     </svg>
   );
 }
 
-/** 20. '좋아요' (liking): 환하게 웃으며 엄지척과 하트를 띄우는 동작 */
+/** 12. '좋아요' (liking): 환하게 웃는 캐릭터와 하트·엄지척이 떠오르는 관절 모션 */
 export function LikingScene({ size }: { readonly size: number }): React.ReactElement {
   return (
     <svg width={size} height={size} viewBox="0 0 80 80" aria-label="좋아요 실제 동작">
-      <circle cx="40" cy="40" r="36" fill="#FEF3C7" />
-      <circle cx="32" cy="44" r="15" fill="#FFE0BD" />
-      <path d="M26 41 Q28 38 30 41 M34 41 Q36 38 38 41" stroke="#3D352E" strokeWidth="2" fill="none" />
-      <path d="M27 47 Q32 53 37 47" stroke="#E05A47" strokeWidth="2.2" fill="none" />
-      <g style={{ animation: 'childJumpJoy 0.95s ease-in-out infinite' }}>
-        <text x="54" y="34" fontSize="22" textAnchor="middle">❤️</text>
-        <text x="56" y="56" fontSize="22" textAnchor="middle">👍</text>
+      <rect x="3" y="3" width="74" height="74" rx="20" fill="#FEF3C7" stroke="#FDE68A" strokeWidth="2.5" />
+      <CuteCharacter cx={33} cy={39} r={16.5} shirtColor="#F59E0B" mood="excited" />
+      <g style={{ animation: 'childJumpJoy 0.9s ease-in-out infinite' }}>
+        <path d="M58 26 C55 21, 48 22, 48 28 C48 33, 58 39, 58 39 C58 39, 68 33, 68 28 C68 22, 61 21, 58 26 Z" fill="#FF6B6B" stroke="#3D352E" strokeWidth="1.8" />
+        <circle cx="58" cy="54" r="8" fill="#FFE0BD" stroke="#3D352E" strokeWidth="2" />
+        <rect x="55" y="42" width="6" height="9" rx="3" fill="#FFE0BD" stroke="#3D352E" strokeWidth="2" />
       </g>
     </svg>
   );
 }
 
-/** 21. '맛있어요' (delicious): 두 손으로 볼을 감싸고 입맛을 다시며 행복해하는 동작 */
+/** 13. '맛있어요' (delicious): 두 손으로 볼을 감싸고 행복해하는 관절 모션 */
 export function DeliciousScene({ size }: { readonly size: number }): React.ReactElement {
   return (
     <svg width={size} height={size} viewBox="0 0 80 80" aria-label="맛있어요 실제 동작">
-      <circle cx="40" cy="40" r="36" fill="#FFF7ED" />
-      <g style={{ animation: 'childJumpJoy 1.05s ease-in-out infinite' }}>
-        <circle cx="40" cy="42" r="17" fill="#FFE0BD" />
-        <path d="M32 38 Q35 34 38 38 M42 38 Q45 34 48 38" stroke="#3D352E" strokeWidth="2" fill="none" />
-        <path d="M33 46 Q40 53 47 46" stroke="#E05A47" strokeWidth="2.2" fill="none" />
-        <ellipse cx="44" cy="50" rx="3.5" ry="2.5" fill="#FF7675" />
-        <circle cx="24" cy="46" r="5.5" fill="#FFCC99" />
-        <circle cx="56" cy="46" r="5.5" fill="#FFCC99" />
-        <text x="58" y="24" fontSize="16">✨</text>
+      <rect x="3" y="3" width="74" height="74" rx="20" fill="#FFF7ED" stroke="#FED7AA" strokeWidth="2.5" />
+      <g style={{ animation: 'childJumpJoy 1s ease-in-out infinite' }}>
+        <CuteCharacter cx={40} cy={39} r={17.5} shirtColor="#FF9F43" mood="yummy" />
+        <circle cx="22" cy="44" r="5.5" fill="#FFE0BD" stroke="#3D352E" strokeWidth="1.8" />
+        <circle cx="58" cy="44" r="5.5" fill="#FFE0BD" stroke="#3D352E" strokeWidth="1.8" />
       </g>
     </svg>
   );
 }
 
-/** 22. '재밌어요' (fun): 두 팔을 번쩍 들고 신나게 점프하며 웃는 동작 */
+/** 14. '재밌어요' (fun) & 15. '기분 좋아요' (happy) */
 export function FunScene({ size }: { readonly size: number }): React.ReactElement {
   return (
     <svg width={size} height={size} viewBox="0 0 80 80" aria-label="재밌어요 실제 동작">
-      <circle cx="40" cy="40" r="36" fill="#ECFDF5" />
+      <rect x="3" y="3" width="74" height="74" rx="20" fill="#ECFDF5" stroke="#A7F3D0" strokeWidth="2.5" />
       <g style={{ animation: 'childJumpJoy 0.8s ease-in-out infinite' }}>
-        <circle cx="40" cy="34" r="13" fill="#FFE0BD" />
-        <path d="M35 32 L38 34 L35 36 M45 32 L42 34 L45 36" stroke="#3D352E" strokeWidth="2" fill="none" />
-        <path d="M35 38 Q40 45 45 38 Z" fill="#E05A47" />
-        <path d="M27 36 L18 22 M53 36 L62 22" stroke="#FFE0BD" strokeWidth="5.5" strokeLinecap="round" />
-        <path d="M30 47 L50 47 L48 62 L32 62 Z" fill="#10B981" />
-        <text x="20" y="20" fontSize="14">🎉</text>
+        <CuteCharacter cx={40} cy={38} r={16.5} shirtColor="#10B981" mood="excited" />
+        <path d="M23 44 L14 26 M57 44 L66 26" stroke="#FFE0BD" strokeWidth="5.5" strokeLinecap="round" />
+      </g>
+    </svg>
+  );
+}
+
+export function HappyScene({ size }: { readonly size: number }): React.ReactElement {
+  return (
+    <svg width={size} height={size} viewBox="0 0 80 80" aria-label="기분 좋아요 실제 동작">
+      <rect x="3" y="3" width="74" height="74" rx="20" fill="#FFF0F6" stroke="#FBCFE8" strokeWidth="2.5" />
+      <g style={{ animation: 'childJumpJoy 0.9s ease-in-out infinite' }}>
+        <CuteCharacter cx={36} cy={39} r={17} shirtColor="#EC4899" mood="excited" />
+        <path d="M60 24 C57 19, 50 20, 50 26 C50 31, 60 37, 60 37 C60 37, 70 31, 70 26 C70 20, 63 19, 60 24 Z" fill="#FF6B6B" stroke="#3D352E" strokeWidth="1.6" />
+      </g>
+    </svg>
+  );
+}
+
+/** 16. '배고파요' (hungry), 17. '아파요' (sick), 18. '졸려요' (sleepy) */
+export function HungryScene({ size }: { readonly size: number }): React.ReactElement {
+  return (
+    <svg width={size} height={size} viewBox="0 0 80 80" aria-label="배고파요 실제 동작">
+      <rect x="3" y="3" width="74" height="74" rx="20" fill="#FFFBEB" stroke="#FDE68A" strokeWidth="2.5" />
+      <CuteCharacter cx={34} cy={38} r={16.5} shirtColor="#F59E0B" mood="hungry" />
+      <g style={{ animation: 'handsGiveAndTake 1.05s ease-in-out infinite' }}>
+        <circle cx="59" cy="26" r="11" fill="#FFFFFF" stroke="#3D352E" strokeWidth="1.8" strokeDasharray="3 2" />
+        <path d="M52 28 H66 L64 33 H54 Z" fill="#54A0FF" stroke="#3D352E" strokeWidth="1.4" />
+      </g>
+    </svg>
+  );
+}
+
+export function SickScene({ size }: { readonly size: number }): React.ReactElement {
+  return (
+    <svg width={size} height={size} viewBox="0 0 80 80" aria-label="아파요 실제 동작">
+      <rect x="3" y="3" width="74" height="74" rx="20" fill="#FFF5F5" stroke="#FFA8A8" strokeWidth="2.5" />
+      <g style={{ animation: 'headAndHandShakeNo 0.8s ease-in-out infinite' }}>
+        <CuteCharacter cx={38} cy={39} r={17.5} shirtColor="#A29BFE" mood="sick" showBandage={true} />
+        <path d="M62 16 L65 22 L71 20 L67 26 L70 31 L64 29 L61 35 L60 28 L55 25 L60 22 Z" fill="#FF5252" stroke="#3D352E" strokeWidth="1.4" />
+      </g>
+    </svg>
+  );
+}
+
+export function SleepyScene({ size }: { readonly size: number }): React.ReactElement {
+  return (
+    <svg width={size} height={size} viewBox="0 0 80 80" aria-label="졸려요 실제 동작">
+      <rect x="3" y="3" width="74" height="74" rx="20" fill="#EEF2FF" stroke="#C7D2FE" strokeWidth="2.5" />
+      <CuteCharacter cx={35} cy={40} r={17} shirtColor="#6366F1" mood="sleepy" />
+      <g style={{ animation: 'takeOutUp 1.4s ease-in-out infinite' }}>
+        <text x="58" y="26" fontSize="14" fontWeight="900" fill="#4F46E5" textAnchor="middle">Zzz</text>
       </g>
     </svg>
   );

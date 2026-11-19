@@ -57,7 +57,7 @@ export function NounBoardSection({
         height: '100%',
       }}
     >
-      {/* 5대 명사 카테고리 알약 탭 */}
+      {/* 4대 순수 명사 카테고리 알약 탭 */}
       <Space wrap size={[8, 8]} style={{ marginBottom: 16, width: '100%' }}>
         {categories.map((cat) => {
           const isActive = cat.id === activeCategory;

@@ -96,10 +96,12 @@ describe('마음톡톡 AAC 의사소통 보드 단계별 집중 UI 및 통합 �
     expect(screen.getByLabelText('즐겨찾기 표현 빵 주세요')).toBeInTheDocument();
   });
 
-  it('놀이·장난감 카테고리에 모든 어휘(그네, 트램폴린, 자전거, 노래, 비눗방울 등)가 페이지 넘김 없이 한 화면에 제시되고 동사 화면에서도 전체 동사가 한 화면에 제시되어야 한다', () => {
+  it('놀이·장난감 카테고리에 모든 어휘가 제시되고, 1페이지에는 순수 명사만 다루며 감정·상태 형용사는 2페이지에서 동사와 함께 상시 모션으로 제시되어야 한다', () => {
     useAacStore.setState({ activeChapter: 'play', activeCategory: 'play', selectedCards: [] });
     render(<App />);
 
+    // 1페이지에서는 감정·상태 탭이 없고 순수 명사만 존재
+    expect(screen.queryByRole('button', { name: /감정·상태/i })).not.toBeInTheDocument();
     expect(screen.getByLabelText('그네 카드')).toBeInTheDocument();
     expect(screen.getByLabelText('트램폴린 카드')).toBeInTheDocument();
     expect(screen.getByLabelText('자전거 카드')).toBeInTheDocument();
@@ -109,11 +111,17 @@ describe('마음톡톡 AAC 의사소통 보드 단계별 집중 UI 및 통합 �
 
     fireEvent.click(screen.getByLabelText('노래 카드'));
 
+    // 2페이지에서 동사와 함께 감정·상태 형용사 카드들이 제시되며 상시 모션 활성화 확인
     expect(screen.getByLabelText('틀어주세요 카드')).toBeInTheDocument();
     expect(screen.getByLabelText('만지지 마세요 카드')).toBeInTheDocument();
     expect(screen.getByLabelText('좋아요 카드')).toBeInTheDocument();
     expect(screen.getByLabelText('맛있어요 카드')).toBeInTheDocument();
     expect(screen.getByLabelText('재밌어요 카드')).toBeInTheDocument();
+    expect(screen.getByLabelText('기분 좋아요 카드')).toBeInTheDocument();
+    expect(screen.getByLabelText('배고파요 카드')).toBeInTheDocument();
+    expect(screen.getByLabelText('아파요 카드')).toBeInTheDocument();
+    expect(screen.getByLabelText('졸려요 카드')).toBeInTheDocument();
+    expect(screen.getByLabelText('아파요 동작 애니메이션')).toHaveAttribute('data-active', 'true');
   });
 
   it('아동 화면에는 치료사 전용 버튼이 숨겨지고 "설정" 버튼을 눌렀을 때 이용자 변경 및 새 카드 만들기를 열 수 있어야 한다', () => {

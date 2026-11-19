@@ -124,26 +124,26 @@ export function CombinedSentenceStage({
       </Space>
 
       {/* 중앙 시각 제시 영역 */}
-      <div style={{ minHeight: 210, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '10px 14px' }}>
+      <div style={{ minHeight: 260, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '12px 14px' }}>
         {!isMerged ? (
-          <div aria-label="두 카드 조합 제시 화면" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 20, flexWrap: 'wrap' }}>
-            <div style={{ padding: '14px 24px', borderRadius: 22, backgroundColor: '#FFFFFF', border: `3px solid ${WARM_PASTEL_COLORS.NOUN_ACCENT}` }}>
+          <div aria-label="두 카드 조합 제시 화면" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 24, flexWrap: 'wrap' }}>
+            <div style={{ padding: '18px 28px', borderRadius: 24, backgroundColor: '#FFFFFF', border: `3px solid ${WARM_PASTEL_COLORS.NOUN_ACCENT}` }}>
               {nounCard.customImageUrl ? (
-                <img src={nounCard.customImageUrl} alt={nounCard.label} className="noun-active-motion" style={{ width: 72, height: 72, objectFit: 'cover', borderRadius: 16 }} />
+                <img src={nounCard.customImageUrl} alt={nounCard.label} className="noun-active-motion" style={{ width: TOUCH_METRICS.STAGE_CARD_GRAPHIC_SIZE, height: TOUCH_METRICS.STAGE_CARD_GRAPHIC_SIZE, objectFit: 'contain', borderRadius: 18 }} />
               ) : (
-                <span className="noun-active-motion" style={{ fontSize: 64 }}>{nounCard.emoji}</span>
+                <span className="noun-active-motion" style={{ fontSize: TOUCH_METRICS.CARD_EMOJI_FONT_SIZE }}>{nounCard.emoji}</span>
               )}
-              <div><Text strong style={{ fontSize: 22 }}>{nounCard.label}</Text></div>
+              <div style={{ marginTop: 6 }}><Text strong style={{ fontSize: TOUCH_METRICS.CARD_LABEL_FONT_SIZE }}>{nounCard.label}</Text></div>
             </div>
             <Title level={2} style={{ margin: 0, color: WARM_PASTEL_COLORS.PRIMARY_BRAND }}>+</Title>
-            <div style={{ padding: '14px 24px', borderRadius: 22, backgroundColor: '#FFFFFF', border: `3px solid ${WARM_PASTEL_COLORS.VERB_ACCENT}` }}>
-              <AnimatedVerbGraphic cardId={verbCard.id} emoji={verbCard.emoji} label={verbCard.label} motionType={verbCard.motionType} customImageUrl={verbCard.customImageUrl} size={76} isActive={true} />
-              <div><Text strong style={{ fontSize: 22 }}>{verbCard.label}</Text></div>
+            <div style={{ padding: '18px 28px', borderRadius: 24, backgroundColor: '#FFFFFF', border: `3px solid ${WARM_PASTEL_COLORS.VERB_ACCENT}` }}>
+              <AnimatedVerbGraphic cardId={verbCard.id} emoji={verbCard.emoji} label={verbCard.label} motionType={verbCard.motionType} customImageUrl={verbCard.customImageUrl} size={TOUCH_METRICS.STAGE_CARD_GRAPHIC_SIZE} isActive={true} />
+              <div style={{ marginTop: 6 }}><Text strong style={{ fontSize: TOUCH_METRICS.CARD_LABEL_FONT_SIZE }}>{verbCard.label}</Text></div>
             </div>
           </div>
         ) : (
           <div aria-label="하나로 결합된 실제 동작 화면">
-            <CombinedActionScene nounCard={nounCard} verbCard={verbCard} size={196} />
+            <CombinedActionScene nounCard={nounCard} verbCard={verbCard} size={TOUCH_METRICS.STAGE_MERGED_SCENE_SIZE} />
           </div>
         )}
 

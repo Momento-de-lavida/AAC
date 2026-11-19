@@ -184,13 +184,14 @@ export const useAacStore = create<AacStoreState>((set, get) => {
 });
 
 /**
- * @description 기본 카드와 커스텀 카드를 합쳐 현재 카테고리의 명사 목록과 동사 목록을 반환하는 순수 헬퍼
+ * @description 기본 카드와 커스텀 카드를 합쳐 현재 카테고리의 명사 목록과 동사·형용사 목록을 반환하는 순수 헬퍼
  */
 export function getVisibleCards(
   activeCategory: NounCategoryId,
   customCards: readonly AacCard[]
 ): { readonly nouns: AacCard[]; readonly verbs: AacCard[] } {
+  const valid: readonly string[] = ['food', 'play', 'daily', 'people'];
   const allNouns = [...DEFAULT_NOUN_CARDS, ...customCards.filter((c) => c.partOfSpeech === 'noun')];
   const allVerbs = [...DEFAULT_VERB_CARDS, ...customCards.filter((c) => c.partOfSpeech === 'verb')];
-  return { nouns: allNouns.filter((c) => c.categoryId === activeCategory), verbs: allVerbs };
+  return { nouns: allNouns.filter((c) => (c.categoryId && valid.includes(c.categoryId) ? c.categoryId : 'daily') === activeCategory), verbs: allVerbs };
 }

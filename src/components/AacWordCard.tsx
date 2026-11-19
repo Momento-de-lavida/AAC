@@ -46,8 +46,8 @@ export function AacWordCard({
 }: AacWordCardProps): React.ReactElement {
   const isVerb = card.partOfSpeech === 'verb';
   const isNounAnimating = !isVerb && isSelected;
-  // 동사도 선택되었을 때(또는 문장 발화 중일 때)만 실제 동작 애니메이션 활성화!
-  const isVerbAnimating = isVerb && isSelected;
+  // 2페이지 진입 시 자폐 아동이 움직이는 동작·감정 장면을 직관적으로 보고 고를 수 있도록 비활성(Dimmed) 상태가 아니면 상시 모션 작동
+  const isVerbAnimating = isVerb && !isDimmed;
 
   const borderColor = isSelected
     ? WARM_PASTEL_COLORS.PRIMARY_BRAND
@@ -127,8 +127,15 @@ export function AacWordCard({
         </span>
       )}
 
-      {/* 중앙 시각 영역: 선택된 카드만 모션이 활성화되어 아동의 주의 집중 유도 */}
-      <div style={{ minHeight: 74, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      {/* 중앙 시각 영역: 자폐 아동이 한눈에 직관적으로 인지할 수 있도록 대폭 확대한 그림·이모지 영역 */}
+      <div
+        style={{
+          minHeight: TOUCH_METRICS.CARD_GRAPHIC_SIZE + 8,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
         {isVerb ? (
           <AnimatedVerbGraphic
             cardId={card.id}
@@ -136,7 +143,7 @@ export function AacWordCard({
             label={card.label}
             motionType={card.motionType}
             customImageUrl={card.customImageUrl}
-            size={68}
+            size={TOUCH_METRICS.CARD_GRAPHIC_SIZE}
             isActive={isVerbAnimating}
           />
         ) : card.customImageUrl ? (
@@ -144,13 +151,18 @@ export function AacWordCard({
             src={card.customImageUrl}
             alt={card.label}
             className={isNounAnimating ? 'noun-active-motion' : undefined}
-            style={{ width: 64, height: 64, objectFit: 'cover', borderRadius: 14 }}
+            style={{
+              width: TOUCH_METRICS.CARD_GRAPHIC_SIZE,
+              height: TOUCH_METRICS.CARD_GRAPHIC_SIZE,
+              objectFit: 'contain',
+              borderRadius: 18,
+            }}
           />
         ) : (
           <span
             data-testid={`noun-symbol-${card.id}`}
             className={isNounAnimating ? 'noun-active-motion' : undefined}
-            style={{ fontSize: 52, lineHeight: 1 }}
+            style={{ fontSize: TOUCH_METRICS.CARD_EMOJI_FONT_SIZE, lineHeight: 1.05 }}
           >
             {card.emoji}
           </span>
@@ -160,7 +172,7 @@ export function AacWordCard({
       <Text
         strong
         style={{
-          fontSize: 20,
+          fontSize: TOUCH_METRICS.CARD_LABEL_FONT_SIZE,
           color: WARM_PASTEL_COLORS.TEXT_PRIMARY,
           textAlign: 'center',
           wordBreak: 'keep-all',

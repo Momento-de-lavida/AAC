@@ -21,6 +21,10 @@ export const VERB_MOTION_OPTIONS: { value: VerbMotionType; label: string }[] = [
   { value: 'liking', label: '👍 좋아요 (엄지척과 하트 표현)' },
   { value: 'delicious', label: '😋 맛있어요 (볼 감싸며 맛 음미하기)' },
   { value: 'fun', label: '😆 재밌어요 (신나게 만세하며 점프)' },
+  { value: 'happy', label: '🥰 기분 좋아요 (하트와 함께 활짝 웃기)' },
+  { value: 'hungry', label: '🤤 배고파요 (꼬르륵 배 잡고 음식 생각)' },
+  { value: 'sick', label: '🤒 아파요 (반창고와 아픈 표정)' },
+  { value: 'sleepy', label: '😴 졸려요 (쿨쿨 Zzz 잠자는 모습)' },
   { value: 'playing', label: '🎈 놀아요·던져요·굴려요 (신체 놀이)' },
   { value: 'more', label: '➕ 더 주세요 (하나 더 추가하기)' },
   { value: 'helping', label: '🤝 도와주세요·잡아요 (두 손 맞잡기)' },
@@ -29,21 +33,22 @@ export const VERB_MOTION_OPTIONS: { value: VerbMotionType; label: string }[] = [
 ];
 
 /**
- * @description 언어재활 현장의 고빈도 동사·서술어 전체 템플릿 (일상·이동·도구·신체·놀이 동작 총망라)
+ * @description 2페이지 전용 고빈도 동사·형용사(감정/상태) 통합 템플릿
+ * (1페이지 명사와 자연스럽게 결합되도록 동작 동사와 감정·상태 형용사를 함께 구성)
  */
 export const DEFAULT_VERB_CARDS: readonly AacCard[] = [
   // 기본 핵심 요구·식음·이동 동사
   { id: 'verb-give', label: '주세요', speechText: '주세요', partOfSpeech: 'verb', emoji: '🤲', motionType: 'begging' },
-  { id: 'verb-eat', label: '먹어요', speechText: '먹어요', partOfSpeech: 'verb', emoji: '🥄', motionType: 'eating' },
+  { id: 'verb-eat', label: '먹어요', speechText: '먹어요', partOfSpeech: 'verb', emoji: '🍽️', motionType: 'eating' },
   { id: 'verb-drink', label: '마셔요', speechText: '마셔요', partOfSpeech: 'verb', emoji: '🥤', motionType: 'drinking' },
   { id: 'verb-tear', label: '뜯어요', speechText: '뜯어요', partOfSpeech: 'verb', emoji: '🍬', motionType: 'tearing' },
-  { id: 'verb-insert-straw', label: '꽂아요', speechText: '꽂아요', partOfSpeech: 'verb', emoji: '🥤', motionType: 'puttingIn' },
+  { id: 'verb-insert-straw', label: '꽂아요', speechText: '꽂아요', partOfSpeech: 'verb', emoji: '🧃', motionType: 'puttingIn' },
   { id: 'verb-pour', label: '부어요', speechText: '부어요', partOfSpeech: 'verb', emoji: '🫗', motionType: 'drinking' },
   { id: 'verb-ride', label: '타요', speechText: '타요', partOfSpeech: 'verb', emoji: '🚗', motionType: 'riding' },
-  { id: 'verb-get-off', label: '내려요', speechText: '내려요', partOfSpeech: 'verb', emoji: '⬇️', motionType: 'going' },
-  { id: 'verb-go', label: '가요', speechText: '가요', partOfSpeech: 'verb', emoji: '🚶', motionType: 'going' },
-  { id: 'verb-go-up', label: '올라가요', speechText: '올라가요', partOfSpeech: 'verb', emoji: '⬆️', motionType: 'going' },
-  { id: 'verb-go-down', label: '내려가요', speechText: '내려가요', partOfSpeech: 'verb', emoji: '⤵️', motionType: 'going' },
+  { id: 'verb-get-off', label: '내려요', speechText: '내려요', partOfSpeech: 'verb', emoji: '🚶', motionType: 'going' },
+  { id: 'verb-go', label: '가요', speechText: '가요', partOfSpeech: 'verb', emoji: '🏃', motionType: 'going' },
+  { id: 'verb-go-up', label: '올라가요', speechText: '올라가요', partOfSpeech: 'verb', emoji: '🧗', motionType: 'going' },
+  { id: 'verb-go-down', label: '내려가요', speechText: '내려가요', partOfSpeech: 'verb', emoji: '🛝', motionType: 'going' },
   { id: 'verb-enter', label: '들어가요', speechText: '들어가요', partOfSpeech: 'verb', emoji: '⛺', motionType: 'puttingIn' },
 
   // 착석·기립·신체 자세 및 손 동작
@@ -52,11 +57,11 @@ export const DEFAULT_VERB_CARDS: readonly AacCard[] = [
   { id: 'verb-lie-down', label: '누워요', speechText: '누워요', partOfSpeech: 'verb', emoji: '🛌', motionType: 'liking' },
   { id: 'verb-hold-hand', label: '잡아요', speechText: '잡아요', partOfSpeech: 'verb', emoji: '🤝', motionType: 'helping' },
   { id: 'verb-let-go', label: '놓아요', speechText: '놓아요', partOfSpeech: 'verb', emoji: '🖐️', motionType: 'takingOut' },
-  { id: 'verb-move-away', label: '치워요', speechText: '치워요', partOfSpeech: 'verb', emoji: '🤚', motionType: 'dontTouch' },
+  { id: 'verb-move-away', label: '치워요', speechText: '치워요', partOfSpeech: 'verb', emoji: '🫸', motionType: 'dontTouch' },
   { id: 'verb-dont-touch', label: '만지지 마세요', speechText: '만지지 마세요', partOfSpeech: 'verb', emoji: '✋', motionType: 'dontTouch' },
 
   // 문·도구·위생·착탈의 일상 동작
-  { id: 'verb-open', label: '열어요', speechText: '열어요', partOfSpeech: 'verb', emoji: '🚪', motionType: 'opening' },
+  { id: 'verb-open', label: '열어요', speechText: '열어요', partOfSpeech: 'verb', emoji: '🔓', motionType: 'opening' },
   { id: 'verb-close', label: '닫아요', speechText: '닫아요', partOfSpeech: 'verb', emoji: '🔒', motionType: 'puttingIn' },
   { id: 'verb-cut', label: '잘라요', speechText: '잘라요', partOfSpeech: 'verb', emoji: '✂️', motionType: 'tearing' },
   { id: 'verb-comb', label: '빗어요', speechText: '빗어요', partOfSpeech: 'verb', emoji: '🪮', motionType: 'washing' },
@@ -64,25 +69,29 @@ export const DEFAULT_VERB_CARDS: readonly AacCard[] = [
   { id: 'verb-take-off', label: '벗어요', speechText: '벗어요', partOfSpeech: 'verb', emoji: '🧥', motionType: 'takingOut' },
   { id: 'verb-shoes-on', label: '신어요', speechText: '신어요', partOfSpeech: 'verb', emoji: '👟', motionType: 'wearing' },
   { id: 'verb-wipe', label: '닦아요', speechText: '닦아요', partOfSpeech: 'verb', emoji: '🧻', motionType: 'washing' },
-  { id: 'verb-wash', label: '씻어요', speechText: '씻어요', partOfSpeech: 'verb', emoji: '🫧', motionType: 'washing' },
+  { id: 'verb-wash', label: '씻어요', speechText: '씻어요', partOfSpeech: 'verb', emoji: '🧼', motionType: 'washing' },
   { id: 'verb-throw-away', label: '버려요', speechText: '버려요', partOfSpeech: 'verb', emoji: '🗑️', motionType: 'puttingIn' },
   { id: 'verb-takeout', label: '꺼내요', speechText: '꺼내요', partOfSpeech: 'verb', emoji: '📤', motionType: 'takingOut' },
   { id: 'verb-putin', label: '넣어요', speechText: '넣어요', partOfSpeech: 'verb', emoji: '📥', motionType: 'puttingIn' },
 
-  // 놀이·음악·감정·상호작용 동작
+  // 놀이·음악·감정·상태(형용사)·상호작용 서술어
   { id: 'verb-push', label: '밀어요', speechText: '밀어요', partOfSpeech: 'verb', emoji: '👐', motionType: 'playing' },
-  { id: 'verb-roll', label: '굴려요', speechText: '굴려요', partOfSpeech: 'verb', emoji: '🎳', motionType: 'riding' },
+  { id: 'verb-roll', label: '굴려요', speechText: '굴려요', partOfSpeech: 'verb', emoji: '⚽', motionType: 'riding' },
   { id: 'verb-throw', label: '던져요', speechText: '던져요', partOfSpeech: 'verb', emoji: '🤾', motionType: 'playing' },
   { id: 'verb-sing', label: '불러요', speechText: '불러요', partOfSpeech: 'verb', emoji: '🎤', motionType: 'turningOn' },
   { id: 'verb-listen', label: '들어요', speechText: '들어요', partOfSpeech: 'verb', emoji: '🎧', motionType: 'watching' },
   { id: 'verb-turn-on', label: '틀어주세요', speechText: '틀어주세요', partOfSpeech: 'verb', emoji: '🎶', motionType: 'turningOn' },
   { id: 'verb-watch', label: '봐요', speechText: '봐요', partOfSpeech: 'verb', emoji: '👀', motionType: 'watching' },
-  { id: 'verb-play', label: '하고 싶어요', speechText: '하고 싶어요', partOfSpeech: 'verb', emoji: '🎈', motionType: 'playing' },
+  { id: 'verb-play', label: '하고 싶어요', speechText: '하고 싶어요', partOfSpeech: 'verb', emoji: '🙌', motionType: 'playing' },
   { id: 'verb-more', label: '더 주세요', speechText: '더 주세요', partOfSpeech: 'verb', emoji: '➕', motionType: 'more' },
-  { id: 'verb-help', label: '도와주세요', speechText: '도와주세요', partOfSpeech: 'verb', emoji: '🤝', motionType: 'helping' },
-  { id: 'verb-like', label: '좋아요', speechText: '좋아요', partOfSpeech: 'verb', emoji: '👍', motionType: 'liking' },
+  { id: 'verb-help', label: '도와주세요', speechText: '도와주세요', partOfSpeech: 'verb', emoji: '🆘', motionType: 'helping' },
+  { id: 'verb-like', label: '좋아요', speechText: '좋아요', partOfSpeech: 'verb', emoji: '🥰', motionType: 'liking' },
   { id: 'verb-delicious', label: '맛있어요', speechText: '맛있어요', partOfSpeech: 'verb', emoji: '😋', motionType: 'delicious' },
-  { id: 'verb-fun', label: '재밌어요', speechText: '재밌어요', partOfSpeech: 'verb', emoji: '😆', motionType: 'fun' },
+  { id: 'verb-fun', label: '재밌어요', speechText: '재밌어요', partOfSpeech: 'verb', emoji: '🥳', motionType: 'fun' },
+  { id: 'verb-happy', label: '기분 좋아요', speechText: '기분 좋아요', partOfSpeech: 'verb', emoji: '😄', motionType: 'happy' },
+  { id: 'verb-hungry', label: '배고파요', speechText: '배고파요', partOfSpeech: 'verb', emoji: '🤤', motionType: 'hungry' },
+  { id: 'verb-sick', label: '아파요', speechText: '아파요', partOfSpeech: 'verb', emoji: '🤒', motionType: 'sick' },
+  { id: 'verb-sleepy', label: '졸려요', speechText: '졸려요', partOfSpeech: 'verb', emoji: '😴', motionType: 'sleepy' },
   { id: 'verb-refuse', label: '싫어요', speechText: '싫어요', partOfSpeech: 'verb', emoji: '🙅', motionType: 'refusing' },
   { id: 'verb-greet', label: '안녕하세요', speechText: '안녕하세요', partOfSpeech: 'verb', emoji: '👋', motionType: 'greeting' },
 ] as const;
