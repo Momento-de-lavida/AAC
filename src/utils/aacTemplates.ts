@@ -38,7 +38,7 @@ export const NOUN_CATEGORIES: readonly NounCategory[] = [
   { id: 'people', label: '사람·장소', iconEmoji: '👨‍👩‍👧', badgeColor: '#FF6B6B' },
 ] as const;
 
-const N_IMG = '/images/aac/nouns';
+const N_IMG = './images/aac/nouns';
 
 /**
  * @description 카테고리별로 표시될 기본 명사(무엇을?) 어휘 템플릿 (전 어휘 동화풍 플래시카드 일러스트 적용)

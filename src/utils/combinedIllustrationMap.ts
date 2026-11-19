@@ -3,7 +3,7 @@
  * 사물과 아동의 행동이 하나의 완성된 동화책 장면으로 그려진 전용 일체형 동화풍 일러스트 매핑 모듈
  */
 
-const C_DIR = '/images/aac/combined';
+const C_DIR = './images/aac/combined';
 
 /**
  * @description 명사 ID와 동사 ID 조합(`nounId__verbId`)에 대응하는 일체형 동화풍 일러스트 경로 테이블

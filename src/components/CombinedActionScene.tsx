@@ -62,7 +62,7 @@ export function CombinedActionScene({ nounCard, verbCard, size = 240 }: Combined
   const motion: VerbMotionType = verbCard.motionType ?? 'begging';
   const combinedLabel = `${nounCard.label} ${verbCard.label} 통합 동작 그림`;
   const dedicatedCombinedImg = getDedicatedCombinedIllustration(nounCard.id, verbCard.id);
-  const fairytaleActionImg = verbCard.customImageUrl ?? `/images/aac/combined/motion-${motion}.jpg`;
+  const fairytaleActionImg = verbCard.customImageUrl ?? `./images/aac/combined/motion-${motion}.jpg`;
   const overlay = getNounOverlayConfig(motion);
   const clipId = `noun-clip-${nounCard.id}-${verbCard.id}`;
 
