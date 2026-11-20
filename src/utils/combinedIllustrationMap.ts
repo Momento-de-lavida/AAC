@@ -28,6 +28,7 @@ export const DEDICATED_COMBINED_IMAGES: Readonly<Record<string, string>> = {
 
   'noun-water__verb-drink': `${C_DIR}/noun-water__verb-drink.jpg`,
   'noun-water__verb-eat': `${C_DIR}/noun-water__verb-drink.jpg`,
+  'noun-water__verb-cool': `${C_DIR}/motion-cool.jpg`,
 
   'noun-snack__verb-eat': `${C_DIR}/noun-snack__verb-eat.jpg`,
   'noun-snack__verb-delicious': `${C_DIR}/noun-snack__verb-eat.jpg`,
@@ -57,7 +58,8 @@ export const DEDICATED_COMBINED_IMAGES: Readonly<Record<string, string>> = {
   'noun-swing__verb-ride': `${C_DIR}/noun-swing__verb-ride.jpg`,
   'noun-swing__verb-play': `${C_DIR}/noun-swing__verb-ride.jpg`,
   'noun-swing__verb-fun': `${C_DIR}/noun-swing__verb-ride.jpg`,
-  'noun-swing__verb-push': `${C_DIR}/noun-swing__verb-ride.jpg`,
+  'noun-swing__verb-push': `${C_DIR}/verb-push.jpg`,
+  'noun-swing__verb-get-off': `${C_DIR}/verb-get-off.jpg`,
 
   'noun-trampoline__verb-ride': `${C_DIR}/noun-trampoline__verb-ride.jpg`,
   'noun-trampoline__verb-play': `${C_DIR}/noun-trampoline__verb-ride.jpg`,
@@ -65,6 +67,7 @@ export const DEDICATED_COMBINED_IMAGES: Readonly<Record<string, string>> = {
 
   'noun-car__verb-ride': `${C_DIR}/noun-car__verb-ride.jpg`,
   'noun-car__verb-play': `${C_DIR}/noun-car__verb-ride.jpg`,
+  'noun-car__verb-get-off': `${C_DIR}/verb-get-off.jpg`,
 
   'noun-bicycle__verb-ride': `${C_DIR}/noun-bicycle__verb-ride.jpg`,
   'noun-bicycle__verb-play': `${C_DIR}/noun-bicycle__verb-ride.jpg`,
@@ -96,10 +99,11 @@ export const DEDICATED_COMBINED_IMAGES: Readonly<Record<string, string>> = {
 
   // 3. 일상·생활·신체 & 사람·장소 일체형 일러스트
   'noun-hands__verb-wash': `${C_DIR}/noun-hands__verb-wash.jpg`,
-  'noun-hands__verb-wipe': `${C_DIR}/noun-hands__verb-wash.jpg`,
-  'noun-hands__verb-hold-hand': `${C_DIR}/motion-helping.jpg`,
+  'noun-hands__verb-wipe': `${C_DIR}/verb-wipe.jpg`,
+  'noun-hands__verb-hold-hand': `${C_DIR}/verb-hold-hand.jpg`,
   'noun-chair__verb-sit': `${C_DIR}/noun-chair__verb-sit.jpg`,
   'noun-door__verb-open': `${C_DIR}/noun-door__verb-open.jpg`,
+  'noun-door__verb-close': `${C_DIR}/verb-close.jpg`,
   'noun-hair__verb-comb': `${C_DIR}/noun-hair__verb-comb.jpg`,
   'noun-hair__verb-sick': `${C_DIR}/motion-sick.jpg`,
   'noun-tummy__verb-sick': `${C_DIR}/motion-sick.jpg`,
@@ -108,6 +112,37 @@ export const DEDICATED_COMBINED_IMAGES: Readonly<Record<string, string>> = {
   'noun-bed__verb-sleepy': `${C_DIR}/motion-sleepy.jpg`,
   'noun-bed__verb-lie-down': `${C_DIR}/motion-sleepy.jpg`,
   'noun-clothes__verb-wear': `${C_DIR}/motion-wearing.jpg`,
+  'noun-clothes__verb-take-off': `${C_DIR}/verb-take-off.jpg`,
+  'noun-shoes__verb-take-off': `${C_DIR}/verb-take-off.jpg`,
+  'noun-tissue__verb-wipe': `${C_DIR}/verb-wipe.jpg`,
+};
+
+/**
+ * @description 동사·형용사 자체에 구체적 사물 맥락이 함께 그려진 전용 일체형 동화풍 일러스트 테이블
+ */
+export const DEDICATED_VERB_SCENE_IMAGES: Readonly<Record<string, string>> = {
+  'verb-get-off': `${C_DIR}/verb-get-off.jpg`,
+  'verb-enter': `${C_DIR}/noun-tent__verb-enter.jpg`,
+  'verb-exit': `${C_DIR}/verb-exit.jpg`,
+  'verb-hold-hand': `${C_DIR}/verb-hold-hand.jpg`,
+  'verb-let-go': `${C_DIR}/verb-let-go.jpg`,
+  'verb-move-away': `${C_DIR}/verb-move-away.jpg`,
+  'verb-open': `${C_DIR}/verb-open.jpg`,
+  'verb-close': `${C_DIR}/verb-close.jpg`,
+  'verb-take-off': `${C_DIR}/verb-take-off.jpg`,
+  'verb-wipe': `${C_DIR}/verb-wipe.jpg`,
+  'verb-push': `${C_DIR}/verb-push.jpg`,
+  'verb-listen': `${C_DIR}/noun-song__verb-listen.jpg`,
+  'verb-clean-up': `${C_DIR}/verb-clean-up.jpg`,
+  'verb-put-up': `${C_DIR}/verb-put-up.jpg`,
+  'verb-put-down': `${C_DIR}/verb-put-down.jpg`,
+  'verb-cool': `${C_DIR}/motion-cool.jpg`,
+  'verb-warm': `${C_DIR}/motion-warm.jpg`,
+  'verb-cold-weather': `${C_DIR}/motion-coldWeather.jpg`,
+  'verb-cold-touch': `${C_DIR}/motion-coldTouch.jpg`,
+  'verb-hot': `${C_DIR}/motion-hot.jpg`,
+  'verb-tired': `${C_DIR}/motion-tired.jpg`,
+  'verb-difficult': `${C_DIR}/motion-difficult.jpg`,
 };
 
 /**
@@ -117,5 +152,5 @@ export const DEDICATED_COMBINED_IMAGES: Readonly<Record<string, string>> = {
  * @returns {string | undefined} 전용 일체형 동화풍 일러스트 URL (없으면 undefined)
  */
 export function getDedicatedCombinedIllustration(nounId: string, verbId: string): string | undefined {
-  return DEDICATED_COMBINED_IMAGES[`${nounId}__${verbId}`];
+  return DEDICATED_COMBINED_IMAGES[`${nounId}__${verbId}`] ?? DEDICATED_VERB_SCENE_IMAGES[verbId];
 }

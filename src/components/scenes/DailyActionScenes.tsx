@@ -12,7 +12,7 @@ export interface ActionSceneSubProps {
 
 /**
  * @description [HR-01, HR-03, HR-05] 손 씻기, 과자봉지 뜯기, 빨대 꽂기, 주스 붓기, 가위 자르기,
- * 문 열기·닫기, 머리 빗기, 옷 입기·벗기, 신발 신기, 휴지 닦기, 쓰레기통 버리기 고디테일 캐릭터 SVG 관절 모션 컴포넌트
+ * 문·뚜껑 열기/닫기, 머리 빗기, 옷·신발 입기/벗기, 신발 신기, 휴지로 닦기, 쓰레기통 버리기 고디테일 캐릭터 SVG 관절 모션
  * @param {ActionSceneSubProps} props 선택된 명사 및 동사 카드
  * @returns {React.ReactElement | null} 해당 동작의 일체형 SVG 그룹 엘리먼트
  */
@@ -36,7 +36,6 @@ export function DailyActionScenes({ verbCard }: ActionSceneSubProps): React.Reac
       </g>
     );
   }
-
   if (vId === 'verb-tear') {
     return (
       <g>
@@ -57,7 +56,6 @@ export function DailyActionScenes({ verbCard }: ActionSceneSubProps): React.Reac
       </g>
     );
   }
-
   if (vId === 'verb-insert-straw') {
     return (
       <g>
@@ -72,7 +70,6 @@ export function DailyActionScenes({ verbCard }: ActionSceneSubProps): React.Reac
       </g>
     );
   }
-
   if (vId === 'verb-pour') {
     return (
       <g>
@@ -86,7 +83,6 @@ export function DailyActionScenes({ verbCard }: ActionSceneSubProps): React.Reac
       </g>
     );
   }
-
   if (vId === 'verb-cut') {
     return (
       <g>
@@ -106,20 +102,25 @@ export function DailyActionScenes({ verbCard }: ActionSceneSubProps): React.Reac
       </g>
     );
   }
-
   if (vId === 'verb-open' || vId === 'verb-close') {
     const isClosing = vId === 'verb-close';
     return (
       <g>
-        <rect x="30" y="20" width="56" height="76" rx="4" fill={isClosing ? '#34495E' : '#FFF9DB'} stroke="#3D352E" strokeWidth="3.5" />
-        <g style={{ animation: isClosing ? 'boxLidOpenRight 1.3s ease-in-out infinite' : 'boxLidOpenLeft 1.3s ease-in-out infinite', transformOrigin: '32px 58px' }}>
-          <rect x="32" y="22" width="48" height="72" rx="2" fill={isClosing ? '#E05A47' : '#FF9F43'} stroke="#3D352E" strokeWidth="2.5" />
-          <circle cx="70" cy="58" r="4.5" fill="#FECA57" stroke="#3D352E" strokeWidth="1.8" />
+        <rect x="16" y="22" width="44" height="72" rx="4" fill={isClosing ? '#2C3E50' : '#FFF9DB'} stroke="#3D352E" strokeWidth="3" />
+        <g style={{ animation: isClosing ? 'boxLidOpenRight 1.2s ease-in-out infinite' : 'boxLidOpenLeft 1.2s ease-in-out infinite', transformOrigin: '18px 58px' }}>
+          <rect x="18" y="24" width="38" height="68" rx="2" fill={isClosing ? '#E05A47' : '#FF9F43'} stroke="#3D352E" strokeWidth="2.5" />
+          <circle cx="49" cy="58" r="4" fill="#FECA57" stroke="#3D352E" strokeWidth="1.6" />
+          <circle cx="53" cy="60" r="6" fill="#FFE0BD" stroke="#3D352E" strokeWidth="1.8" />
+        </g>
+        <rect x="68" y="56" width="34" height="38" rx="6" fill="#74B9FF" stroke="#3D352E" strokeWidth="2.5" />
+        <g style={{ animation: isClosing ? 'putInDown 1.2s ease-in-out infinite' : 'takeOutUp 1.2s ease-in-out infinite' }}>
+          <rect x="65" y="42" width="40" height="11" rx="4" fill="#FF6B6B" stroke="#3D352E" strokeWidth="2.2" />
+          <circle cx="85" cy="36" r="6" fill="#FFE0BD" stroke="#3D352E" strokeWidth="1.8" />
+          <path d={isClosing ? 'M85 16 V28 M80 23 L85 28 L90 23' : 'M85 28 V16 M80 21 L85 16 L90 21'} stroke={isClosing ? '#E05A47' : '#2E9E6B'} strokeWidth="3" strokeLinecap="round" fill="none" />
         </g>
       </g>
     );
   }
-
   if (vId === 'verb-comb') {
     return (
       <g>
@@ -131,19 +132,21 @@ export function DailyActionScenes({ verbCard }: ActionSceneSubProps): React.Reac
       </g>
     );
   }
-
   if (vId === 'verb-wear' || vId === 'verb-take-off') {
     const isTakeOff = vId === 'verb-take-off';
     return (
       <g>
-        <CuteCharacter cx={60} cy={40} r={18} shirtColor="#FFE0BD" mood="smile" />
-        <g style={{ animation: isTakeOff ? 'takeOutUp 1.3s ease-in-out infinite' : 'putInDown 1.3s ease-in-out infinite' }}>
-          <path d="M32 58 L46 52 L74 52 L88 58 L82 70 L74 66 L74 92 L46 92 L46 66 L38 70 Z" fill={isTakeOff ? '#FF9F43' : '#54A0FF'} stroke="#3D352E" strokeWidth="2.5" />
+        <CuteCharacter cx={50} cy={42} r={16} shirtColor="#FFE0BD" mood="smile" />
+        <g style={{ animation: isTakeOff ? 'takeOutUp 1.25s ease-in-out infinite' : 'putInDown 1.25s ease-in-out infinite' }}>
+          <path d="M26 56 L38 50 L62 50 L74 56 L69 66 L62 63 L62 86 L38 86 L38 63 L31 66 Z" fill={isTakeOff ? '#FF9F43' : '#54A0FF'} stroke="#3D352E" strokeWidth="2.3" />
+          <circle cx="34" cy="54" r="5.5" fill="#FFE0BD" stroke="#3D352E" strokeWidth="1.8" />
+          <circle cx="66" cy="54" r="5.5" fill="#FFE0BD" stroke="#3D352E" strokeWidth="1.8" />
+          <path d="M76 76 H98 Q106 76 106 84 V88 H76 Z" fill="#FF6B6B" stroke="#3D352E" strokeWidth="2.2" />
+          <path d={isTakeOff ? 'M90 44 V24 M84 30 L90 24 L96 30' : 'M90 24 V44 M84 38 L90 44 L96 38'} stroke={isTakeOff ? '#E67E22' : '#2E86DE'} strokeWidth="3.5" strokeLinecap="round" fill="none" />
         </g>
       </g>
     );
   }
-
   if (vId === 'verb-shoes-on') {
     return (
       <g>
@@ -156,19 +159,21 @@ export function DailyActionScenes({ verbCard }: ActionSceneSubProps): React.Reac
       </g>
     );
   }
-
   if (vId === 'verb-wipe') {
     return (
       <g>
-        <rect x="20" y="58" width="80" height="32" rx="8" fill="#DFF9FB" stroke="#3D352E" strokeWidth="2.5" />
-        <g style={{ animation: 'washScrub 0.85s ease-in-out infinite' }}>
-          <rect x="44" y="46" width="32" height="24" rx="6" fill="#FFFFFF" stroke="#3D352E" strokeWidth="2.2" />
-          <circle cx="68" cy="44" r="9.5" fill="#FFE0BD" stroke="#3D352E" strokeWidth="2" />
+        <rect x="16" y="64" width="88" height="28" rx="8" fill="#DFF9FB" stroke="#3D352E" strokeWidth="2.5" />
+        <rect x="18" y="28" width="28" height="18" rx="4" fill="#48DBFB" stroke="#3D352E" strokeWidth="2" />
+        <path d="M26 28 C24 18, 38 18, 36 28 Z" fill="#FFFFFF" stroke="#3D352E" strokeWidth="1.8" />
+        <circle cx="52" cy="78" r="6" fill="#D9822B" opacity="0.45" />
+        <g style={{ animation: 'washScrub 0.8s ease-in-out infinite' }}>
+          <path d="M48 48 C48 38, 76 38, 78 52 L74 74 L46 74 Z" fill="#FFFFFF" stroke="#3D352E" strokeWidth="2.3" strokeLinejoin="round" />
+          <circle cx="74" cy="54" r="9" fill="#FFE0BD" stroke="#3D352E" strokeWidth="2.2" />
+          <path d="M90 42 L93 48 L99 51 L93 54 L90 60 L87 54 L81 51 L87 48 Z" fill="#FFC312" />
         </g>
       </g>
     );
   }
-
   if (vId === 'verb-throw-away') {
     return (
       <g>

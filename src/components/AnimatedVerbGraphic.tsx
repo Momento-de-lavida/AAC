@@ -2,6 +2,7 @@ import React from 'react';
 import { AacCard, VerbMotionType } from '../types/aac';
 import { DailyActionScenes } from './scenes/DailyActionScenes';
 import { MoveAndPlayScenes } from './scenes/MoveAndPlayScenes';
+import { StateAndPositionScenes } from './scenes/StateAndPositionScenes';
 import {
   BeggingScene,
   DrinkingScene,
@@ -88,7 +89,10 @@ export function AnimatedVerbGraphic({
   // 1. 동사 고유 ID(cardId) 기반 1:1 전용 직관 장면 우선 확인 (동사 간 이미지 중복 원천 차단)
   if (cardId) {
     const dummyVerbCard: AacCard = { id: cardId, label, speechText: label, partOfSpeech: 'verb', emoji, motionType };
-    const dedicated = DailyActionScenes({ verbCard: dummyVerbCard }) ?? MoveAndPlayScenes({ verbCard: dummyVerbCard });
+    const dedicated =
+      DailyActionScenes({ verbCard: dummyVerbCard }) ??
+      MoveAndPlayScenes({ verbCard: dummyVerbCard }) ??
+      StateAndPositionScenes({ verbCard: dummyVerbCard });
     if (dedicated) {
       return (
         <div

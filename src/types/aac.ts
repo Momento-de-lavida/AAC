@@ -50,7 +50,14 @@ export type VerbMotionType =
   | 'happy'
   | 'hungry'
   | 'sick'
-  | 'sleepy';
+  | 'sleepy'
+  | 'cool'
+  | 'warm'
+  | 'coldWeather'
+  | 'coldTouch'
+  | 'hot'
+  | 'tired'
+  | 'difficult';
 
 /**
  * @description 명사 카테고리 메타데이터 인터페이스
