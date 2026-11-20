@@ -165,5 +165,35 @@ export function StateAndPositionScenes({ verbCard }: ActionSceneSubProps): React
     );
   }
 
+  // 12. 점프해요 (verb-jump) & 13. 뛰어요(점프) (verb-jump-play): 바닥 스프링 반동과 함께 위로 폴짝 점프하는 관절 모션
+  if (vId === 'verb-jump' || vId === 'verb-jump-play') {
+    const isPlayJump = vId === 'verb-jump-play';
+    return (
+      <g>
+        <ellipse cx="60" cy="96" rx="26" ry="5" fill="#BDE0FE" />
+        <g style={{ animation: 'childJumpJoy 0.75s ease-in-out infinite' }}>
+          <CuteCharacter cx={60} cy={36} r={14.5} shirtColor={isPlayJump ? '#FF8E6E' : '#10B981'} mood="excited" />
+          <path d={isPlayJump ? 'M42 46 L26 28 M78 46 L94 28' : 'M44 48 L34 34 M76 48 L86 34'} stroke="#FFE0BD" strokeWidth="5.5" strokeLinecap="round" />
+          <path d="M54 66 L46 80 L54 84 M66 66 L74 80 L66 84" stroke="#3D352E" strokeWidth="4.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+        </g>
+        <path d="M24 72 V48 M18 54 L24 48 L30 54 M96 72 V48 M90 54 L96 48 L102 54" stroke="#FF9F43" strokeWidth="3.2" strokeLinecap="round" fill="none" />
+      </g>
+    );
+  }
+
+  // 14. 달려요 (verb-run): 팔과 다리를 역동적으로 앞뒤로 흔들며 바람을 가르며 빠르게 달리는 관절 모션
+  if (vId === 'verb-run') {
+    return (
+      <g>
+        <path d="M14 44 H32 M10 58 H28 M16 72 H34" stroke="#74B9FF" strokeWidth="3.2" strokeLinecap="round" />
+        <g style={{ animation: 'walkForward 0.75s linear infinite' }}>
+          <CuteCharacter cx={62} cy={38} r={14.5} shirtColor="#FF6B6B" mood="excited" />
+          <path d="M48 52 L36 60 M76 52 L88 42" stroke="#FFE0BD" strokeWidth="5.5" strokeLinecap="round" />
+          <path d="M56 66 L42 84 M68 66 L84 78 L78 90" stroke="#3D352E" strokeWidth="4.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+        </g>
+      </g>
+    );
+  }
+
   return null;
 }

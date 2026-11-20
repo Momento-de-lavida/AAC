@@ -1,4 +1,5 @@
 import { AacCard, ChildProfile, FavoriteSentence, NounCategory } from '../types/aac';
+import { DEFAULT_BODY_NOUN_CARDS } from './aacBodyTemplates';
 import { DEFAULT_VERB_CARDS, VERB_MOTION_OPTIONS } from './aacVerbTemplates';
 import { SWING_SVG_DATA_URL, TRAMPOLINE_SVG_DATA_URL } from './playEquipmentSvg';
 
@@ -34,7 +35,8 @@ export const CUSTOM_CARD_SAMPLE_EMOJIS: readonly string[] = [
 export const NOUN_CATEGORIES: readonly NounCategory[] = [
   { id: 'food', label: '간식·음식', iconEmoji: '🥐', badgeColor: '#FF9F43' },
   { id: 'play', label: '놀이·장난감', iconEmoji: '🧸', badgeColor: '#54A0FF' },
-  { id: 'daily', label: '일상·생활·신체', iconEmoji: '🪥', badgeColor: '#48DBFB' },
+  { id: 'daily', label: '일상·생활', iconEmoji: '🪥', badgeColor: '#48DBFB' },
+  { id: 'body', label: '신체·몸', iconEmoji: '🧒', badgeColor: '#FF7675' },
   { id: 'people', label: '사람·장소', iconEmoji: '👨‍👩‍👧', badgeColor: '#FF6B6B' },
 ] as const;
 
@@ -74,13 +76,9 @@ export const DEFAULT_NOUN_CARDS: readonly AacCard[] = [
   { id: 'noun-crayon', label: '색연필', speechText: '색연필', partOfSpeech: 'noun', categoryId: 'play', emoji: '🖍️', customImageUrl: `${N_IMG}/noun-crayon.jpg` },
   { id: 'noun-puzzle', label: '퍼즐', speechText: '퍼즐', partOfSpeech: 'noun', categoryId: 'play', emoji: '🧩', customImageUrl: `${N_IMG}/noun-puzzle.svg` },
 
-  // 3. 일상·생활·신체 (daily)
+  // 3. 일상·생활 (daily)
   { id: 'noun-chair', label: '의자', speechText: '의자', partOfSpeech: 'noun', categoryId: 'daily', emoji: '🪑', customImageUrl: `${N_IMG}/noun-chair.jpg` },
-  { id: 'noun-hands', label: '손', speechText: '손', partOfSpeech: 'noun', categoryId: 'daily', emoji: '🤚', customImageUrl: `${N_IMG}/noun-hands.jpg` },
   { id: 'noun-door', label: '문', speechText: '문', partOfSpeech: 'noun', categoryId: 'daily', emoji: '🚪', customImageUrl: `${N_IMG}/noun-door.jpg` },
-  { id: 'noun-hair', label: '머리', speechText: '머리', partOfSpeech: 'noun', categoryId: 'daily', emoji: '🧒', customImageUrl: `${N_IMG}/noun-hair.jpg` },
-  { id: 'noun-tummy', label: '배', speechText: '배', partOfSpeech: 'noun', categoryId: 'daily', emoji: '🫃', customImageUrl: `${N_IMG}/noun-tummy.svg` },
-  { id: 'noun-teeth', label: '이(치아)', speechText: '이', partOfSpeech: 'noun', categoryId: 'daily', emoji: '🦷', customImageUrl: `${N_IMG}/noun-teeth.svg` },
   { id: 'noun-bed', label: '침대', speechText: '침대', partOfSpeech: 'noun', categoryId: 'daily', emoji: '🛏️', customImageUrl: `${N_IMG}/noun-bed.svg` },
   { id: 'noun-clothes', label: '옷', speechText: '옷', partOfSpeech: 'noun', categoryId: 'daily', emoji: '👕', customImageUrl: `${N_IMG}/noun-clothes.svg` },
   { id: 'noun-elevator', label: '엘리베이터', speechText: '엘리베이터', partOfSpeech: 'noun', categoryId: 'daily', emoji: '🛗', customImageUrl: `${N_IMG}/noun-elevator.svg` },
@@ -101,6 +99,9 @@ export const DEFAULT_NOUN_CARDS: readonly AacCard[] = [
   { id: 'noun-mom', label: '엄마', speechText: '엄마', partOfSpeech: 'noun', categoryId: 'people', emoji: '👩', customImageUrl: `${N_IMG}/noun-mom.jpg` },
   { id: 'noun-dad', label: '아빠', speechText: '아빠', partOfSpeech: 'noun', categoryId: 'people', emoji: '👨', customImageUrl: `${N_IMG}/noun-dad.jpg` },
   { id: 'noun-teacher', label: '선생님', speechText: '선생님', partOfSpeech: 'noun', categoryId: 'people', emoji: '👩‍🏫', customImageUrl: `${N_IMG}/noun-teacher.svg` },
+
+  // 5. 신체·몸 (body — 21종 신체부위 어휘 전체)
+  ...DEFAULT_BODY_NOUN_CARDS,
 ] as const;
 
 /**

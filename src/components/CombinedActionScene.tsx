@@ -1,6 +1,6 @@
 import React from 'react';
 import { AacCard, VerbMotionType } from '../types/aac';
-import { getDedicatedCombinedIllustration } from '../utils/combinedIllustrationMap';
+import { getDedicatedCombinedIllustration, getVerbActionBackground } from '../utils/combinedIllustrationMap';
 import '../assets/verbMotions.css';
 
 /**
@@ -15,46 +15,58 @@ export interface CombinedActionSceneProps {
   readonly size?: number;
 }
 
-/** 모션 타입별 선택한 동화풍 명사 일러스트의 상호작용 위치 및 애니메이션 매핑 */
-function getNounOverlayConfig(motion: VerbMotionType): {
+/** 동사 ID 및 모션 타입별 선택한 동화풍 명사 일러스트의 상호작용 위치(손·선반·문·입) 및 애니메이션 매핑 */
+function getNounOverlayConfig(verbId: string, motion: VerbMotionType): {
   readonly x: number;
   readonly y: number;
   readonly r: number;
   readonly animation: string;
 } {
+  // 선반 위/아래로 물건을 올리거나 내릴 때: 아이의 두 손 위치(중앙 선반 위)에 선택한 명사를 큼직하게 배치하여 다른 사물이 보이지 않게 함
+  if (verbId === 'verb-put-up') {
+    return { x: 64, y: 42, r: 27, animation: 'takeOutUp 1.2s ease-in-out infinite' };
+  }
+  if (verbId === 'verb-put-down') {
+    return { x: 62, y: 52, r: 27, animation: 'putInDown 1.2s ease-in-out infinite' };
+  }
+  if (verbId === 'verb-enter' || verbId === 'verb-exit') {
+    return { x: 78, y: 54, r: 28, animation: 'childJumpJoy 1.2s ease-in-out infinite' };
+  }
+
   switch (motion) {
     case 'eating':
-      return { x: 84, y: 78, r: 22, animation: 'spoonToMouth 1.15s ease-in-out infinite' };
+      return { x: 80, y: 74, r: 23, animation: 'spoonToMouth 1.15s ease-in-out infinite' };
     case 'drinking':
-      return { x: 82, y: 78, r: 22, animation: 'cupTiltToMouth 1.2s ease-in-out infinite' };
+      return { x: 80, y: 74, r: 23, animation: 'cupTiltToMouth 1.2s ease-in-out infinite' };
     case 'begging':
     case 'more':
-      return { x: 84, y: 76, r: 22, animation: 'itemDropToHands 1.2s ease-in-out infinite' };
+      return { x: 82, y: 74, r: 23, animation: 'itemDropToHands 1.2s ease-in-out infinite' };
     case 'takingOut':
-      return { x: 86, y: 74, r: 21, animation: 'takeOutUp 1.25s ease-in-out infinite' };
+      return { x: 64, y: 46, r: 25, animation: 'takeOutUp 1.25s ease-in-out infinite' };
     case 'puttingIn':
     case 'wearing':
-      return { x: 86, y: 74, r: 21, animation: 'putInDown 1.25s ease-in-out infinite' };
+      return { x: 64, y: 54, r: 25, animation: 'putInDown 1.25s ease-in-out infinite' };
     case 'tearing':
-      return { x: 86, y: 80, r: 21, animation: 'tearRight 1.2s ease-in-out infinite' };
+      return { x: 62, y: 64, r: 25, animation: 'tearRight 1.2s ease-in-out infinite' };
     case 'riding':
     case 'going':
-      return { x: 88, y: 82, r: 22, animation: 'rideMove 1s ease-in-out infinite' };
+    case 'running':
+      return { x: 84, y: 78, r: 23, animation: 'rideMove 1s ease-in-out infinite' };
     case 'washing':
-      return { x: 86, y: 82, r: 21, animation: 'washScrub 0.9s ease-in-out infinite' };
+      return { x: 82, y: 78, r: 22, animation: 'washScrub 0.9s ease-in-out infinite' };
     case 'refusing':
     case 'dontTouch':
     case 'sick':
-      return { x: 88, y: 82, r: 20, animation: 'headAndHandShakeNo 0.85s ease-in-out infinite' };
+      return { x: 84, y: 78, r: 22, animation: 'headAndHandShakeNo 0.85s ease-in-out infinite' };
     default:
-      return { x: 88, y: 82, r: 21, animation: 'childJumpJoy 0.95s ease-in-out infinite' };
+      return { x: 84, y: 78, r: 22, animation: 'childJumpJoy 0.95s ease-in-out infinite' };
   }
 }
 
 /**
  * @description [HR-01, HR-03, HR-05] 3페이지 결합 완성 스테이지 전용 컴포넌트
- * "빵 먹어요", "주스 마셔요", "우유 마셔요", "과자 먹어요", "사과 먹어요", "밥 먹어요" 등 핵심 조합을
- * 스티커 합성 없이 100% 단일 일체형 동화풍 일러스트로 즉시 렌더링합니다.
+ * "학교에 들어가요", "공 올려요", "공 내려요" 등 모든 명사+동사 조합에서 선택한 사물이 바뀌지 않고
+ * 정확히 일치하는 동화풍 일러스트로 결합되어 렌더링됩니다.
  * @param {CombinedActionSceneProps} props 컴포넌트 프로퍼티
  * @returns {React.ReactElement} 명사+동사 결합 동화풍 일러스트 엘리먼트
  */
@@ -62,8 +74,8 @@ export function CombinedActionScene({ nounCard, verbCard, size = 240 }: Combined
   const motion: VerbMotionType = verbCard.motionType ?? 'begging';
   const combinedLabel = `${nounCard.label} ${verbCard.label} 통합 동작 그림`;
   const dedicatedCombinedImg = getDedicatedCombinedIllustration(nounCard.id, verbCard.id);
-  const fairytaleActionImg = verbCard.customImageUrl ?? `./images/aac/combined/motion-${motion}.jpg`;
-  const overlay = getNounOverlayConfig(motion);
+  const fairytaleActionImg = verbCard.customImageUrl ?? getVerbActionBackground(verbCard.id, motion);
+  const overlay = getNounOverlayConfig(verbCard.id, motion);
   const clipId = `noun-clip-${nounCard.id}-${verbCard.id}`;
 
   return (

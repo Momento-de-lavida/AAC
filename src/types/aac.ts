@@ -4,7 +4,7 @@ import { PartOfSpeech } from './common';
  * @description 명사(사물/어휘) 보드의 4대 순수 명사 카테고리 식별자 타입
  * (감정·상태 등 형용사/서술어는 2페이지 동사·형용사 보드에서 통합 제공)
  */
-export type NounCategoryId = 'food' | 'play' | 'daily' | 'people';
+export type NounCategoryId = 'food' | 'play' | 'daily' | 'people' | 'body';
 
 /**
  * @description 상단 탭에서 선택 가능한 챕터 식별자 ('favorites' 즐겨찾기 챕터 포함)
@@ -57,7 +57,9 @@ export type VerbMotionType =
   | 'coldTouch'
   | 'hot'
   | 'tired'
-  | 'difficult';
+  | 'difficult'
+  | 'jumping'
+  | 'running';
 
 /**
  * @description 명사 카테고리 메타데이터 인터페이스

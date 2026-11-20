@@ -190,7 +190,7 @@ export function getVisibleCards(
   activeCategory: NounCategoryId,
   customCards: readonly AacCard[]
 ): { readonly nouns: AacCard[]; readonly verbs: AacCard[] } {
-  const valid: readonly string[] = ['food', 'play', 'daily', 'people'];
+  const valid: readonly string[] = ['food', 'play', 'daily', 'body', 'people'];
   const allNouns = [...DEFAULT_NOUN_CARDS, ...customCards.filter((c) => c.partOfSpeech === 'noun')];
   const allVerbs = [...DEFAULT_VERB_CARDS, ...customCards.filter((c) => c.partOfSpeech === 'verb')];
   return { nouns: allNouns.filter((c) => (c.categoryId && valid.includes(c.categoryId) ? c.categoryId : 'daily') === activeCategory), verbs: allVerbs };
