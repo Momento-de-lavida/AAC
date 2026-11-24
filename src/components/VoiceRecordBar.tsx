@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import { Alert, Button, Space, Tag, Typography } from 'antd';
 import {
   AudioFilled, AudioMutedOutlined, CaretRightOutlined,
-  DeleteOutlined, FolderOpenOutlined, PauseCircleOutlined, SoundFilled,
+  DeleteOutlined, FolderOpenOutlined, PauseCircleOutlined, ScissorOutlined, SoundFilled,
 } from '@ant-design/icons';
 import { TOUCH_METRICS, WARM_PASTEL_COLORS } from '../utils/constants';
 
@@ -24,6 +24,7 @@ export interface VoiceRecordBarProps {
   readonly onStopRecording: () => void;
   readonly onSelectAudioFile: (file: File | undefined) => void;
   readonly onPlayRecordedWithScene: () => void;
+  readonly onOpenTrimModal?: () => void;
   readonly onDeleteRecording: () => void;
 }
 
@@ -37,7 +38,7 @@ const BTN_HEIGHT = TOUCH_METRICS.MIN_TARGET_SIZE - 6;
 export function VoiceRecordBar({
   sentenceText, hasRecordedVoice, isRecording, isRecordingPaused = false, isPlayingRecordedVoice,
   recordError, onStartRecording, onPauseRecording, onResumeRecording, onStopRecording,
-  onSelectAudioFile, onPlayRecordedWithScene, onDeleteRecording,
+  onSelectAudioFile, onPlayRecordedWithScene, onOpenTrimModal, onDeleteRecording,
 }: VoiceRecordBarProps): React.ReactElement {
   const audioFileInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -131,6 +132,16 @@ export function VoiceRecordBar({
             >
               {isPlayingRecordedVoice ? '🔊 아동 목소리 재생 중...' : '👧 아동 목소리로 통합 동작 보기'}
             </Button>
+            {onOpenTrimModal && (
+              <Button
+                icon={<ScissorOutlined />}
+                aria-label="녹음 구간 자르기"
+                onClick={onOpenTrimModal}
+                style={{ minHeight: BTN_HEIGHT, borderRadius: 14, fontWeight: 700, borderColor: '#F59E0B', color: '#B45309', backgroundColor: '#FFFBEB' }}
+              >
+                ✂️ 녹음 자르기
+              </Button>
+            )}
             <Button danger size="small" icon={<DeleteOutlined />} aria-label="녹음된 아동 음성 삭제" onClick={onDeleteRecording} style={{ borderRadius: 12 }}>
               녹음 지우기
             </Button>

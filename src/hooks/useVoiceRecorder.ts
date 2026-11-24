@@ -21,6 +21,8 @@ export interface UseVoiceRecorderReturn {
   readonly stopRecordingAndSave: (sentenceText: string, onSaved?: () => void) => Promise<void>;
   readonly handleAudioFile: (sentenceText: string, file: File | undefined, onSaved?: () => void) => Promise<void>;
   readonly playRecordedVoice: (sentenceText: string) => boolean;
+  readonly getRecordedAudioUrl: (sentenceText: string) => string | null;
+  readonly replaceRecordedVoice: (sentenceText: string, trimmedDataUrl: string, onSaved?: () => void) => void;
   readonly deleteRecordedVoice: (sentenceText: string) => void;
   readonly stopVoiceAll: () => void;
 }
@@ -47,9 +49,7 @@ export function useVoiceRecorder(profileId = 'child-daon'): UseVoiceRecorderRetu
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const maxTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const clearMaxTimer = (): void => {
-    if (maxTimerRef.current) { clearTimeout(maxTimerRef.current); maxTimerRef.current = null; }
-  };
+  const clearMaxTimer = (): void => { if (maxTimerRef.current) { clearTimeout(maxTimerRef.current); maxTimerRef.current = null; } };
 
   /** 녹음 및 오디오 재생을 모두 안전하게 정지 */
   const stopVoiceAll = useCallback((): void => {
@@ -177,6 +177,10 @@ export function useVoiceRecorder(profileId = 'child-daon'): UseVoiceRecorderRetu
     [saveAndPlayDataUrl, stopVoiceAll]
   );
 
+  const getRecordedAudioUrl = useCallback((sentenceText: string): string | null => recordedMapRef.current[sentenceText] ?? null, []);
+  const replaceRecordedVoice = useCallback((sentenceText: string, trimmedDataUrl: string, onSaved?: () => void): void => {
+    if (sentenceText && trimmedDataUrl) saveAndPlayDataUrl(sentenceText, trimmedDataUrl, onSaved);
+  }, [saveAndPlayDataUrl]);
   const deleteRecordedVoice = useCallback((sentenceText: string): void => {
     stopAudioElement(audioRef.current);
     setIsPlayingRecordedVoice(false);
@@ -186,10 +190,9 @@ export function useVoiceRecorder(profileId = 'child-daon'): UseVoiceRecorderRetu
     saveToStorage(storageKey, next);
     setRecordedMap(next);
   }, [storageKey]);
-
   return {
     isRecording, isRecordingPaused, isPlayingRecordedVoice, recordError, hasRecordedVoice,
     startRecording, pauseRecording, resumeRecording, stopRecordingAndSave, handleAudioFile,
-    playRecordedVoice, deleteRecordedVoice, stopVoiceAll,
+    playRecordedVoice, getRecordedAudioUrl, replaceRecordedVoice, deleteRecordedVoice, stopVoiceAll,
   };
 }

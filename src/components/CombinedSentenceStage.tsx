@@ -1,10 +1,12 @@
 import React, { useEffect, useRef } from 'react';
 import { Button, Card, Space, Tag, Typography } from 'antd';
 import { ArrowLeftOutlined, ReloadOutlined, SoundFilled, StarFilled } from '@ant-design/icons';
+import { useAudioTrimmer } from '../hooks/useAudioTrimmer';
 import { useVoiceRecorder } from '../hooks/useVoiceRecorder';
 import { AacCard } from '../types/aac';
 import { TOUCH_METRICS, WARM_PASTEL_COLORS } from '../utils/constants';
 import { AnimatedVerbGraphic } from './AnimatedVerbGraphic';
+import { AudioTrimModal } from './AudioTrimModal';
 import { CombinedActionScene } from './CombinedActionScene';
 import { VoiceRecordBar } from './VoiceRecordBar';
 import '../assets/verbMotions.css';
@@ -22,30 +24,18 @@ export type CombinedStagePhase = 'combo' | 'merged';
  * @description CombinedSentenceStage 컴포넌트의 Props 인터페이스
  */
 export interface CombinedSentenceStageProps {
-  /** 현재 활성화된 아동(이용자) 프로필 ID */
-  readonly activeProfileId?: string;
-  /** 선택된 명사 카드 (예: 빵) */
-  readonly nounCard: AacCard;
-  /** 선택된 동사 카드 (예: 먹어요) */
-  readonly verbCard: AacCard;
-  /** 완성된 문장 텍스트 (예: '빵 먹어요') */
-  readonly sentenceText: string;
-  /** 현재 제시 단계 ('combo': 3단계 두 카드 조합 페이지 -> 'merged': 4단계 하나의 통합 동작 그림 페이지) */
-  readonly stagePhase: CombinedStagePhase;
-  /** 이미 즐겨찾기에 저장된 문장인지 여부 */
-  readonly isFavoriteSaved: boolean;
-  /** 단계 전환 콜백 (withTts가 true일 때만 기본 TTS 발화) */
-  readonly onChangePhase: (phase: CombinedStagePhase, withTts?: boolean) => void;
-  /** 1차 조합 제시 -> 2차 통합 동작 제시 시퀀스 전체 다시 실행 콜백 */
-  readonly onReplaySequence: () => void;
-  /** TTS 발화 및 자동 전환 타이머 즉시 정지 콜백 */
-  readonly onStopTts: () => void;
-  /** 즐겨찾기 저장 콜백 */
-  readonly onSaveFavorite: () => void;
-  /** 2단계(동사 다시 고르기) 페이지로 돌아가는 콜백 */
-  readonly onBackToVerbStep?: () => void;
-  /** 1단계 다른 문장 만들기(처음으로) 콜백 */
-  readonly onReset: () => void;
+  readonly activeProfileId?: string; /** 현재 아동 프로필 ID */
+  readonly nounCard: AacCard; /** 선택된 명사 카드 */
+  readonly verbCard: AacCard; /** 선택된 동사 카드 */
+  readonly sentenceText: string; /** 완성된 문장 텍스트 */
+  readonly stagePhase: CombinedStagePhase; /** 현재 제시 단계 ('combo' | 'merged') */
+  readonly isFavoriteSaved: boolean; /** 즐겨찾기 저장 여부 */
+  readonly onChangePhase: (phase: CombinedStagePhase, withTts?: boolean) => void; /** 단계 전환 콜백 */
+  readonly onReplaySequence: () => void; /** 시퀀스 다시 실행 콜백 */
+  readonly onStopTts: () => void; /** TTS 및 타이머 정지 콜백 */
+  readonly onSaveFavorite: () => void; /** 즐겨찾기 저장 콜백 */
+  readonly onBackToVerbStep?: () => void; /** 2단계 복귀 콜백 */
+  readonly onReset: () => void; /** 1단계 초기화 콜백 */
 }
 
 /**
@@ -66,8 +56,9 @@ export function CombinedSentenceStage({
   const {
     isRecording, isRecordingPaused, isPlayingRecordedVoice, recordError, hasRecordedVoice,
     startRecording, pauseRecording, resumeRecording, stopRecordingAndSave, handleAudioFile,
-    playRecordedVoice, deleteRecordedVoice, stopVoiceAll,
+    playRecordedVoice, getRecordedAudioUrl, replaceRecordedVoice, deleteRecordedVoice, stopVoiceAll,
   } = useVoiceRecorder(activeProfileId);
+  const trimmer = useAudioTrimmer();
 
   const hasChildVoice = hasRecordedVoice(sentenceText);
 
@@ -168,7 +159,16 @@ export function CombinedSentenceStage({
         onStopRecording={() => { onStopTts(); void stopRecordingAndSave(sentenceText, switchToMergedWithoutTts); }}
         onSelectAudioFile={(file) => { onStopTts(); void handleAudioFile(sentenceText, file, switchToMergedWithoutTts); }}
         onPlayRecordedWithScene={() => { switchToMergedWithoutTts(); playRecordedVoice(sentenceText); }}
+        onOpenTrimModal={() => { stopVoiceAll(); onStopTts(); void trimmer.openTrimModal(getRecordedAudioUrl(sentenceText)); }}
         onDeleteRecording={() => deleteRecordedVoice(sentenceText)}
+      />
+
+      <AudioTrimModal
+        open={trimmer.isTrimOpen} sentenceText={sentenceText}
+        isDecoding={trimmer.isDecoding} isPreviewing={trimmer.isPreviewing} trimError={trimmer.trimError}
+        durationSec={trimmer.durationSec} peaks={trimmer.peaks} range={trimmer.range}
+        onChangeRange={trimmer.setRange} onTogglePreview={trimmer.togglePreview} onClose={trimmer.closeTrimModal}
+        onSaveTrimmed={() => { const url = trimmer.applyTrimAndGetDataUrl(); if (url) replaceRecordedVoice(sentenceText, url, switchToMergedWithoutTts); }}
       />
 
       {/* 하단 제어 버튼 (이전 단계 복귀 및 전체 초기화 포함) */}
