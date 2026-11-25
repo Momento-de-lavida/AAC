@@ -166,9 +166,11 @@ export function CombinedSentenceStage({
       <AudioTrimModal
         open={trimmer.isTrimOpen} sentenceText={sentenceText}
         isDecoding={trimmer.isDecoding} isPreviewing={trimmer.isPreviewing} trimError={trimmer.trimError}
+        trimMode={trimmer.trimMode} canUndo={trimmer.canUndo}
         durationSec={trimmer.durationSec} peaks={trimmer.peaks} range={trimmer.range}
-        onChangeRange={trimmer.setRange} onTogglePreview={trimmer.togglePreview} onClose={trimmer.closeTrimModal}
-        onSaveTrimmed={() => { const url = trimmer.applyTrimAndGetDataUrl(); if (url) replaceRecordedVoice(sentenceText, url, switchToMergedWithoutTts); }}
+        onChangeMode={trimmer.setTrimMode} onChangeRange={trimmer.setRange} onTogglePreview={trimmer.togglePreview}
+        onApplyCut={trimmer.applyEditCut} onUndo={trimmer.undoEdit} onClose={trimmer.closeTrimModal}
+        onSaveTrimmed={() => { const url = trimmer.saveFinalAndGetDataUrl(); if (url) replaceRecordedVoice(sentenceText, url, switchToMergedWithoutTts); }}
       />
 
       {/* 하단 제어 버튼 (이전 단계 복귀 및 전체 초기화 포함) */}
