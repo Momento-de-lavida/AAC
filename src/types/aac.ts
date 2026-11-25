@@ -144,6 +144,18 @@ export interface TtsSettings {
 }
 
 /**
+ * @description 이용자(아동)별로 숨긴 어휘카드와 카드 노출 순서를 저장하는 개인화 보드 설정 인터페이스
+ */
+export interface ProfileBoardConfig {
+  /** 해당 아동 보드에서 빼기(숨김) 처리된 카드 ID 배열 */
+  readonly hiddenCardIds: readonly string[];
+  /** 해당 아동의 명사 카드 정렬 순서(카드 ID 배열) */
+  readonly nounOrderIds: readonly string[];
+  /** 해당 아동의 동사·형용사 카드 정렬 순서(카드 ID 배열) */
+  readonly verbOrderIds: readonly string[];
+}
+
+/**
  * @description TTS 발화 진행 상태 이벤트 리스너 타입
  */
 export type TtsStatusListener = (state: {

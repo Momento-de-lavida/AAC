@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { AddCustomCardModal } from '../components/AddCustomCardModal';
 import { AppHeaderBar } from '../components/AppHeaderBar';
+import { BoardEditModal } from '../components/BoardEditModal';
 import { ChildProfileModal } from '../components/ChildProfileModal';
 import { CombinedSentenceStage } from '../components/CombinedSentenceStage';
 import { FavoriteChapterSection } from '../components/FavoriteChapterSection';
@@ -11,7 +12,7 @@ import { useStepTransition } from '../hooks/useStepTransition';
 import { useTTS } from '../hooks/useTTS';
 import { getVisibleCards, useAacStore } from '../store/useAacStore';
 import { AacCard, FavoriteSentence } from '../types/aac';
-import { NOUN_CATEGORIES } from '../utils/aacTemplates';
+import { DEFAULT_NOUN_CARDS, DEFAULT_VERB_CARDS, NOUN_CATEGORIES } from '../utils/aacTemplates';
 import { WARM_PASTEL_COLORS } from '../utils/constants';
 
 /**
@@ -22,14 +23,16 @@ import { WARM_PASTEL_COLORS } from '../utils/constants';
 export function HomePage(): React.ReactElement {
   const [isAddModalOpen, setIsAddModalOpen] = useState<boolean>(false);
   const [isTtsModalOpen, setIsTtsModalOpen] = useState<boolean>(false);
+  const [isBoardEditModalOpen, setIsBoardEditModalOpen] = useState<boolean>(false);
 
   const {
     profiles, activeProfileId, isProfileModalOpen, activeChapter, activeCategory,
-    selectedCards, customCards, favoriteSentences, ttsSettings,
+    selectedCards, customCards, favoriteSentences, ttsSettings, boardConfig,
     setProfileModalOpen, selectProfile, addProfile, deleteProfile,
     setActiveChapter, setActiveCategory, selectCard, clearSelectedVerb,
     clearSentence, getSentenceText, saveCurrentAsFavorite, removeFavoriteSentence,
     applyFavoriteSentence, addCustomCard, deleteCustomCard, updateTtsSettings,
+    toggleCardVisibility, moveCardOrder, resetBoardConfig,
   } = useAacStore();
 
   const activeProfile = useMemo(
@@ -37,7 +40,18 @@ export function HomePage(): React.ReactElement {
     [profiles, activeProfileId]
   );
   const { isSpeaking, koreanVoices, speak, speakWithSentence, stop } = useTTS(ttsSettings);
-  const { nouns, verbs } = useMemo(() => getVisibleCards(activeCategory, customCards), [activeCategory, customCards]);
+  const { nouns, verbs } = useMemo(
+    () => getVisibleCards(activeCategory, customCards, boardConfig),
+    [activeCategory, customCards, boardConfig]
+  );
+  const allNounCards = useMemo(
+    () => [...DEFAULT_NOUN_CARDS, ...customCards.filter((c) => c.partOfSpeech === 'noun')],
+    [customCards]
+  );
+  const allVerbCards = useMemo(
+    () => [...DEFAULT_VERB_CARDS, ...customCards.filter((c) => c.partOfSpeech === 'verb')],
+    [customCards]
+  );
   const selectedCardIds = useMemo(() => new Set(selectedCards.map((c) => c.id)), [selectedCards]);
   const selectedNoun = useMemo(() => selectedCards.find((c) => c.partOfSpeech === 'noun'), [selectedCards]);
   const selectedVerb = useMemo(() => selectedCards.find((c) => c.partOfSpeech === 'verb'), [selectedCards]);
@@ -160,7 +174,15 @@ export function HomePage(): React.ReactElement {
         open={isTtsModalOpen} activeProfile={activeProfile} settings={ttsSettings} koreanVoices={koreanVoices}
         onUpdateSettings={updateTtsSettings} onTestSpeak={speak}
         onOpenProfileModal={() => setProfileModalOpen(true)} onOpenAddCardModal={() => setIsAddModalOpen(true)}
+        onOpenBoardEditModal={() => setIsBoardEditModalOpen(true)}
         onClose={() => setIsTtsModalOpen(false)}
+      />
+      <BoardEditModal
+        open={isBoardEditModalOpen} activeProfile={activeProfile} categories={NOUN_CATEGORIES}
+        defaultCategoryId={activeCategory} allNounCards={allNounCards} allVerbCards={allVerbCards}
+        boardConfig={boardConfig} onToggleCardVisibility={toggleCardVisibility}
+        onMoveCardOrder={moveCardOrder} onResetBoardConfig={resetBoardConfig}
+        onClose={() => setIsBoardEditModalOpen(false)}
       />
     </main>
   );

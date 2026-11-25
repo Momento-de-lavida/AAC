@@ -108,4 +108,23 @@ describe('Phase 6: 단계별 선택, 명사 노출 개수 설정 및 즐겨찾�
       useAacStore.getState().favoriteSentences.some((f) => f.sentenceText === '우유 주세요')
     ).toBe(true);
   });
+
+  it('이용자(아동)별로 어휘카드를 빼거나(숨김) 순서를 바꿀 수 있으며 다른 이용자에게 영향을 주지 않아야 한다', () => {
+    useAacStore.getState().selectProfile('child-daon');
+    useAacStore.getState().resetBoardConfig();
+
+    // 다온이 보드에서 '빵' 카드 빼기(숨김) 및 두 번째 카드('과자봉지')를 첫 번째로 이동
+    useAacStore.getState().toggleCardVisibility('noun-bread');
+    const foodNounsBefore = DEFAULT_NOUN_CARDS.filter((c) => c.categoryId === 'food');
+    useAacStore.getState().moveCardOrder('noun', 'noun-snack-bag', 'up', foodNounsBefore);
+
+    const daonVisible = getVisibleCards('food', [], useAacStore.getState().boardConfig);
+    expect(daonVisible.nouns.some((c) => c.id === 'noun-bread')).toBe(false);
+    expect(daonVisible.nouns[0].id).toBe('noun-snack-bag');
+
+    // 하준이로 전환하면 '빵' 카드가 정상적으로 첫 번째에 보여야 함
+    useAacStore.getState().selectProfile('child-hajun');
+    const hajunVisible = getVisibleCards('food', [], useAacStore.getState().boardConfig);
+    expect(hajunVisible.nouns[0].id).toBe('noun-bread');
+  });
 });

@@ -10,6 +10,7 @@ export const STORAGE_KEYS = {
   RECORDED_VOICES: 'aac_app_recorded_voices_v1',
   CHILD_PROFILES: 'aac_app_child_profiles_v1',
   ACTIVE_PROFILE_ID: 'aac_app_active_profile_id_v1',
+  BOARD_CONFIG: 'aac_app_board_config_v1',
 } as const;
 
 /**

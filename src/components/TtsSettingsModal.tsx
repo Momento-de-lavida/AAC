@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Divider, Form, Modal, Select, Slider, Space, Switch, Typography } from 'antd';
-import { PlusCircleOutlined, SoundFilled, UserSwitchOutlined } from '@ant-design/icons';
+import { OrderedListOutlined, PlusCircleOutlined, SoundFilled, UserSwitchOutlined } from '@ant-design/icons';
 import { ChildProfile, TtsSettings } from '../types/aac';
 import { TOUCH_METRICS, WARM_PASTEL_COLORS } from '../utils/constants';
 
@@ -26,6 +26,8 @@ export interface TtsSettingsModalProps {
   readonly onOpenProfileModal?: () => void;
   /** 새 어휘·동작 카드 만들기 모달 열기 콜백 */
   readonly onOpenAddCardModal?: () => void;
+  /** 아동별 어휘카드 순서·숨김 관리 모달 열기 콜백 */
+  readonly onOpenBoardEditModal?: () => void;
   /** 모달 닫기 콜백 */
   readonly onClose: () => void;
 }
@@ -45,6 +47,7 @@ export function TtsSettingsModal({
   onTestSpeak,
   onOpenProfileModal,
   onOpenAddCardModal,
+  onOpenBoardEditModal,
   onClose,
 }: TtsSettingsModalProps): React.ReactElement {
   return (
@@ -108,6 +111,22 @@ export function TtsSettingsModal({
               }}
             >
               새 카드 만들기 (사진·카메라)
+            </Button>
+          )}
+          {onOpenBoardEditModal && (
+            <Button
+              icon={<OrderedListOutlined />}
+              onClick={() => {
+                onClose();
+                onOpenBoardEditModal();
+              }}
+              style={{
+                minHeight: TOUCH_METRICS.MIN_TARGET_SIZE - 8,
+                borderRadius: 12,
+                fontWeight: 700,
+              }}
+            >
+              어휘카드 순서·숨김 관리
             </Button>
           )}
         </Space>
