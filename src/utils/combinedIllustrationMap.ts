@@ -71,7 +71,6 @@ export const DEDICATED_COMBINED_IMAGES: Readonly<Record<string, string>> = {
   'noun-car__verb-ride': `${C_DIR}/noun-car__verb-ride.jpg`,
   'noun-car__verb-play': `${C_DIR}/noun-car__verb-ride.jpg`,
   'noun-car__verb-get-off': `${C_DIR}/verb-get-off.jpg`,
-  'noun-car__verb-move-away': `${C_DIR}/verb-move-away.jpg`,
 
   'noun-bicycle__verb-ride': `${C_DIR}/noun-bicycle__verb-ride.jpg`,
   'noun-bicycle__verb-play': `${C_DIR}/noun-bicycle__verb-ride.jpg`,
@@ -122,7 +121,6 @@ export const DEDICATED_COMBINED_IMAGES: Readonly<Record<string, string>> = {
   'noun-hands__verb-wipe': `${C_DIR}/verb-wipe.jpg`,
   'noun-hands__verb-hold-hand': `${C_DIR}/verb-hold-hand.jpg`,
   'noun-hands__verb-let-go': `${C_DIR}/verb-let-go.jpg`,
-  'noun-hands__verb-move-away': `${C_DIR}/verb-move-away.jpg`,
   'noun-chair__verb-sit': `${C_DIR}/noun-chair__verb-sit.jpg`,
   'noun-door__verb-open': `${C_DIR}/noun-door__verb-open.jpg`,
   'noun-door__verb-close': `${C_DIR}/verb-close.jpg`,
@@ -172,7 +170,6 @@ export function getVerbActionBackground(verbId: string, motion: VerbMotionType):
     'verb-exit': `${C_DIR}/verb-exit.jpg`,
     'verb-hold-hand': `${C_DIR}/verb-hold-hand.jpg`,
     'verb-let-go': `${C_DIR}/verb-let-go.jpg`,
-    'verb-move-away': `${C_DIR}/verb-move-away.jpg`,
     'verb-open': `${C_DIR}/verb-open.jpg`,
     'verb-close': `${C_DIR}/verb-close.jpg`,
     'verb-take-off': `${C_DIR}/verb-take-off.jpg`,

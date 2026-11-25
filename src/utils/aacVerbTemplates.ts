@@ -17,7 +17,7 @@ export const VERB_MOTION_OPTIONS: { value: VerbMotionType; label: string }[] = [
   { value: 'washing', label: '🫧 씻어요·닦아요 (깨끗이 닦기)' },
   { value: 'watching', label: '👀 봐요·들어요 (집중하기)' },
   { value: 'turningOn', label: '🎶 틀어주세요·불러요 (음악 활동)' },
-  { value: 'dontTouch', label: '✋ 만지지 마세요·치워요 (제지하기)' },
+  { value: 'dontTouch', label: '✋ 만지지 마세요 (제지하기)' },
   { value: 'liking', label: '👍 좋아요 (엄지척과 하트 표현)' },
   { value: 'delicious', label: '😋 맛있어요 (볼 감싸며 맛 음미하기)' },
   { value: 'fun', label: '😆 재밌어요 (신나게 만세하며 점프)' },
@@ -51,7 +51,7 @@ export const DEFAULT_VERB_CARDS: readonly AacCard[] = [
   { id: 'verb-drink', label: '마셔요', speechText: '마셔요', partOfSpeech: 'verb', emoji: '🥤', motionType: 'drinking' },
   { id: 'verb-tear', label: '뜯어요', speechText: '뜯어요', partOfSpeech: 'verb', emoji: '🍬', motionType: 'tearing' },
   { id: 'verb-insert-straw', label: '꽂아요', speechText: '꽂아요', partOfSpeech: 'verb', emoji: '🧃', motionType: 'puttingIn' },
-  { id: 'verb-pour', label: '부어요', speechText: '부어요', partOfSpeech: 'verb', emoji: '🫗', motionType: 'drinking' },
+  { id: 'verb-pour', label: '(액체를) 따라요', speechText: '따라요', partOfSpeech: 'verb', emoji: '🫗', motionType: 'drinking' },
   { id: 'verb-ride', label: '타요', speechText: '타요', partOfSpeech: 'verb', emoji: '🚗', motionType: 'riding' },
   { id: 'verb-get-off', label: '내려요', speechText: '내려요', partOfSpeech: 'verb', emoji: '🚶', motionType: 'going' },
   { id: 'verb-go', label: '가요', speechText: '가요', partOfSpeech: 'verb', emoji: '🏃', motionType: 'going' },
@@ -70,8 +70,7 @@ export const DEFAULT_VERB_CARDS: readonly AacCard[] = [
   { id: 'verb-stand', label: '일어나요', speechText: '일어나요', partOfSpeech: 'verb', emoji: '🧍', motionType: 'playing' },
   { id: 'verb-lie-down', label: '누워요', speechText: '누워요', partOfSpeech: 'verb', emoji: '🛌', motionType: 'liking' },
   { id: 'verb-hold-hand', label: '잡아요', speechText: '잡아요', partOfSpeech: 'verb', emoji: '🤝', motionType: 'helping' },
-  { id: 'verb-let-go', label: '놓아요', speechText: '놓아요', partOfSpeech: 'verb', emoji: '🖐️', motionType: 'takingOut' },
-  { id: 'verb-move-away', label: '치워요', speechText: '치워요', partOfSpeech: 'verb', emoji: '🫸', motionType: 'dontTouch' },
+  { id: 'verb-let-go', label: '놓아요', speechText: '놓아요', partOfSpeech: 'verb', emoji: '🫳', motionType: 'puttingIn' },
   { id: 'verb-dont-touch', label: '만지지 마세요', speechText: '만지지 마세요', partOfSpeech: 'verb', emoji: '✋', motionType: 'dontTouch' },
 
   // 3. 문·도구·위생·착탈의·정리 일상 동작
